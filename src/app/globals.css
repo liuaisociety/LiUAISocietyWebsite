@@ -132,12 +132,17 @@
 
 body {
   background-color: #000000;
+  background-image: radial-gradient(ellipse at 38% 50%, #040d1c 0%, #010508 55%, #000000 100%);
+  background-attachment: fixed;
   color: #ffffff;
   font-family: Arial, sans-serif;
   overflow-x: hidden;
 }
 
-body.light { background-color: #ffffff; }
+body.light {
+  background-color: #ffffff;
+  background-image: none;
+}
 
 sup {
   font-family: 'Times New Roman', serif;
@@ -392,6 +397,7 @@ body.light .mobile-link { color: #111111; }
   padding: 200px 40px 40px;
   position: relative; z-index: 1;
 }
+.footer-logo { display: flex; justify-content: center; }
 .footer-logo img { height: 60px; width: auto; margin-bottom: 24px; }
 .footer-socials { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
 .footer-socials a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; color: #333333; transition: color 0.2s ease; }

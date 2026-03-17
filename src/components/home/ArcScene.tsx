@@ -87,8 +87,61 @@ export default function ArcScene() {
     addLayer(50, 0.7,   3, 0x006f99, 0.30, 180, "filament");
     addLayer(35, 1.0,   4, 0x0088cc, 0.18, 150, "outer");
 
+    // Star field
+    const starCount = 800;
+    const starPositions = new Float32Array(starCount * 3);
+    const starSizes = new Float32Array(starCount);
+    const rng = (s: number) => { const x = Math.sin(s * 9301 + 49297) * 233280; return x - Math.floor(x); };
+    for (let i = 0; i < starCount; i++) {
+      const r = 40 + rng(i * 3) * 60;
+      const theta = rng(i * 3 + 1) * Math.PI * 2;
+      const phi = Math.acos(2 * rng(i * 3 + 2) - 1);
+      starPositions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      starPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPositions[i * 3 + 2] = r * Math.cos(phi);
+      starSizes[i] = 0.5 + rng(i * 7) * 1.5;
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
+    starGeo.setAttribute("size", new THREE.BufferAttribute(starSizes, 1));
+    const starMat = new THREE.PointsMaterial({
+      color: 0xaaddff,
+      size: 0.12,
+      transparent: true,
+      opacity: 0.55,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+    });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+
+    // Radial glow behind the arc
+    const glowCanvas = document.createElement("canvas");
+    glowCanvas.width = 512;
+    glowCanvas.height = 512;
+    const ctx = glowCanvas.getContext("2d")!;
+    const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+    grad.addColorStop(0.0,  "rgba(0, 160, 255, 0.08)");
+    grad.addColorStop(0.35, "rgba(0, 100, 180, 0.04)");
+    grad.addColorStop(0.7,  "rgba(0, 40,  100, 0.015)");
+    grad.addColorStop(1.0,  "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 512, 512);
+    const glowTex = new THREE.CanvasTexture(glowCanvas);
+    const glowMat = new THREE.MeshBasicMaterial({
+      map: glowTex,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const glowMesh = new THREE.Mesh(new THREE.PlaneGeometry(32, 32), glowMat);
+    // Position at the sigmoid inflection point (arc midpoint = group local origin = arcContainer x:-6)
+    glowMesh.position.set(-6, 0, -1);
+
     const arcContainer = new THREE.Group();
     arcContainer.add(group);
+    arcContainer.add(glowMesh);
     scene.add(arcContainer);
 
     scene.add(new THREE.AmbientLight(0x001133, 0.3));
@@ -127,6 +180,8 @@ export default function ArcScene() {
         (line.material as THREE.LineBasicMaterial).opacity = line.userData.baseOpacity + Math.sin(time * 8 + i * 0.5) * 0.1;
       });
       group.rotation.y = Math.sin(time * 0.1) * (30 * Math.PI / 180) * rotationState.dampen;
+      stars.rotation.y = time * 0.008;
+      stars.rotation.x = time * 0.003;
       mouseOffset.currentX += (mouseOffset.targetX - mouseOffset.currentX) * 0.03;
       mouseOffset.currentY += (mouseOffset.targetY - mouseOffset.currentY) * 0.03;
       arcContainer.position.x = mouseOffset.currentX;
@@ -207,6 +262,8 @@ export default function ArcScene() {
 
             const fadeProg = Math.max(0, (self.progress - 0.7) / 0.3);
             if (canvas) canvas.style.opacity = String(1 - fadeProg);
+            starMat.opacity = 0.55 * (1 - self.progress);
+            glowMat.opacity = 1 - self.progress;
             if (navArcLogo) navArcLogo.style.opacity = String(fadeProg);
           }
         }

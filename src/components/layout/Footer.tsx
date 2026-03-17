@@ -1,11 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-logo">
-        <Image src="/images/logo.jpeg" alt="LiU AI Society" width={120} height={60} style={{ height: 60, width: "auto" }} />
+        <img src="/images/logo.jpeg" alt="LiU AI Society" style={{ height: 60, width: "auto" }} />
       </div>
       <div className="footer-socials">
         <Link href="https://www.facebook.com/liuaisociety" target="_blank" rel="noopener" aria-label="Facebook">
