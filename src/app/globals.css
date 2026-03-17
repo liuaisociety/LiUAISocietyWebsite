@@ -359,36 +359,106 @@ body.light .mobile-link { color: #111111; }
   max-width: 700px; letter-spacing: 0.01em;
 }
 
-/* Marquee */
-.events-section { height: auto; text-align: center; padding: 300px 0; }
-.events-section .section-heading { margin-bottom: 3rem; }
-.marquee { width: 100%; overflow: hidden; }
-.marquee-track {
-  display: flex; gap: 20px;
-  width: max-content;
-  animation: marquee-scroll 40s linear infinite;
+/* Home Events Section */
+.home-events-section {
+  padding: 120px 40px 140px;
+  max-width: 1200px; margin: 0 auto;
+  width: 100%;
 }
-@keyframes marquee-scroll {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+.home-events-header {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 3rem;
 }
-.event-card {
-  flex-shrink: 0; width: 350px; height: 240px;
-  border-radius: 12px;
-  background-size: cover; background-position: center;
-  position: relative; overflow: hidden;
-}
-.event-card::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 0; right: 0; height: 50%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-}
-.event-card-title {
-  position: absolute; bottom: 16px; left: 20px; right: 20px;
-  color: #ffffff;
+.home-events-header .section-heading { color: #ffffff; }
+.home-events-link {
   font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
-  font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
-  z-index: 1;
+  font-size: 0.8rem; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #00bbff; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.home-events-link:hover { opacity: 0.7; }
+.home-events-group { margin-bottom: 60px; }
+.home-events-subtitle {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 0.75rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+}
+.home-events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Home Event Card */
+.home-event-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(4,13,28,0.6);
+  display: flex; flex-direction: column;
+}
+.home-event-card-img {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #040d1c;
+}
+.home-event-badge {
+  position: absolute; top: 10px; left: 10px; z-index: 1;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  background: rgba(0,0,0,0.55);
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 99px; padding: 2px 8px;
+}
+.home-event-card-content {
+  display: flex; flex-direction: column;
+  gap: 8px; padding: 16px 18px 18px;
+}
+.home-event-card-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.home-event-tag {
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  background: rgba(0,187,255,0.12);
+  color: rgba(0,187,255,0.8);
+  border: 1px solid rgba(0,187,255,0.2);
+  border-radius: 99px; padding: 2px 8px;
+}
+.home-event-card-title {
+  font-size: 0.975rem; font-weight: 600;
+  color: rgba(255,255,255,0.9); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.home-event-card-meta {
+  display: flex; flex-direction: column; gap: 3px;
+  font-size: 12px; color: rgba(255,255,255,0.38);
+}
+.home-event-card-meta span {
+  display: flex; align-items: center; gap: 5px;
+}
+.home-event-card-cta {
+  margin-top: 4px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #00bbff; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.home-event-card-cta:hover { opacity: 0.7; }
+
+@media (max-width: 900px) {
+  .home-events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .home-events-section { padding: 80px 24px 100px; }
+  .home-events-grid { grid-template-columns: 1fr; }
 }
 
 /* Footer */
