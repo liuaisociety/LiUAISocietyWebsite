@@ -65,7 +65,7 @@ function CourseTable({ courses }: { courses: typeof generalCourses }) {
 export default function CoursesPage() {
   return (
     <>
-      <Nav light />
+      <Nav />
       <div className="courses-content">
         <section className="courses-intro">
           <h2 className="section-heading">Courses</h2>

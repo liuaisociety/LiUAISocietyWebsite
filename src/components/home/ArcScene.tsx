@@ -274,19 +274,7 @@ export default function ArcScene() {
       scrollTl.to(rotationState, { dampen: 0, ease: "none" }, 0);
       scrollTl.to(heroTitle, { opacity: 0, y: -40, ease: "none" }, 0);
 
-      bgTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".hero-section",
-          start: "top top",
-          end: "+=300",
-          scrub: 0.5,
-          onUpdate(self) {
-            if (self.progress > 0.8) { nav?.classList.add("light"); document.body.classList.add("light"); }
-            else { nav?.classList.remove("light"); document.body.classList.remove("light"); }
-          }
-        }
-      });
-      bgTl.to(document.body, { backgroundColor: "#ffffff", ease: "none" }, 0);
+      bgTl = gsap.timeline();
     }
 
     createTimelines();

@@ -38,11 +38,6 @@ export default async function HomePage() {
         </section>
         <div className="spacer" />
 
-        <section className="info-section">
-          <h2 className="section-heading">Who We Are</h2>
-          <p className="section-text">We are a student association at Linköping University devoted to the exploration, research and continuous learning of artificial intelligence. We cultivate connections with both industry and academia through networking events, educational lectures, workshops and research projects. We serve as a platform for members and partners to network, build professional relationships, and share knowledge.</p>
-        </section>
-
         <section className="home-events-section">
           <div className="home-events-header">
             <h2 className="section-heading">Events</h2>
@@ -74,6 +69,11 @@ export default async function HomePage() {
           {events.length === 0 && (
             <p className="section-text">No events yet — check back soon.</p>
           )}
+        </section>
+
+        <section className="info-section">
+          <h2 className="section-heading">Who We Are</h2>
+          <p className="section-text">We are a student association at Linköping University devoted to the exploration, research and continuous learning of artificial intelligence. We cultivate connections with both industry and academia through networking events, educational lectures, workshops and research projects. We serve as a platform for members and partners to network, build professional relationships, and share knowledge.</p>
         </section>
 
         <section className="info-section">

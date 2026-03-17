@@ -72,7 +72,7 @@ export function Nav({ light = false }: { light?: boolean }) {
 
   return (
     <>
-      <Image src="/images/logo-arc.png" className="nav-arc-logo" alt="" width={52} height={52} style={{ opacity: light ? 1 : 0 }} />
+      <Image src="/images/logo-arc-white.svg" className="nav-arc-logo" alt="" width={52} height={52} style={{ opacity: light ? 1 : 0 }} />
 
       <nav ref={navRef} className={navClass}>
         <div className="nav-logo">
@@ -97,7 +97,7 @@ export function Nav({ light = false }: { light?: boolean }) {
       <div ref={overlayRef} className="mobile-overlay" />
       <div ref={panelRef} className="mobile-panel">
         <Link href="/" className="mobile-logo">
-          <Image src="/images/logo-arc.png" alt="LiU AI Society" width={48} height={48} />
+          <Image src="/images/logo-arc-white.svg" alt="LiU AI Society" width={48} height={48} />
         </Link>
         <Link href="/" className="mobile-link">Home</Link>
         <Link href="/about" className="mobile-link">About</Link>

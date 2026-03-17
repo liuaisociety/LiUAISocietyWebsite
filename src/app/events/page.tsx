@@ -21,7 +21,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <Nav light />
+      <Nav />
       <div className="about-content">
         <section className="about-intro">
           <h2 className="section-heading">Events</h2>

@@ -16,7 +16,7 @@ const positions = [
 export default function CareerPage() {
   return (
     <>
-      <Nav light />
+      <Nav />
       <div className="career-content">
         <section className="career-intro">
           <h2 className="section-heading">Career</h2>

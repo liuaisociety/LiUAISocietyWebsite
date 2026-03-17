@@ -40,7 +40,7 @@ function MemberCard({ member }: { member: typeof boardMembers[0] & { posX?: stri
 export default function AboutPage() {
   return (
     <>
-      <Nav light />
+      <Nav />
       <div className="about-content">
         <section className="about-intro">
           <h2 className="section-heading">The Board</h2>

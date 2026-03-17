@@ -21,15 +21,16 @@ export function HomeEventCard({ event, past }: { event: Event; past?: boolean })
       <div className="home-event-card-img">
         {event.image ? (
           <Image
-            src={urlFor(event.image).width(800).height(500).quality(85).url()}
+            src={urlFor(event.image).width(800).height(450).quality(85).url()}
             alt={event.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            width={800}
+            height={450}
+            style={{ width: "100%", height: "auto", display: "block" }}
+            className="transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#040d1c] to-[#001a33]" />
+          <div className="home-event-card-placeholder" />
         )}
-        {/* Past badge on image */}
         {past && <span className="home-event-badge">Past</span>}
       </div>
 

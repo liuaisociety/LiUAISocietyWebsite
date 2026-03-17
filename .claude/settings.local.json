@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find E:codelandingpage-frontendsrcpages -type f \\\\\\(-name *event* \\\\\\))"
+    ]
+  }
+}
