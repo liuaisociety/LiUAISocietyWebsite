@@ -12,6 +12,7 @@ export function NewsletterSignup() {
     exam_year: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [checkStatus, setCheckStatus] = useState<"idle" | "loading" | "member" | "not-member" | "error">("idle");
 
   function set(key: keyof typeof fields) {
     return (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -29,6 +30,28 @@ export function NewsletterSignup() {
     });
 
     setStatus(res.ok ? "success" : "error");
+  }
+
+  async function handleCheckMembership() {
+    const email = fields.email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setCheckStatus("error");
+      return;
+    }
+
+    setCheckStatus("loading");
+
+    const res = await fetch(`/api/newsletter?email=${encodeURIComponent(email)}`, {
+      method: "GET",
+    });
+
+    if (!res.ok) {
+      setCheckStatus("error");
+      return;
+    }
+
+    const data: { isMember?: boolean } = await res.json();
+    setCheckStatus(data.isMember ? "member" : "not-member");
   }
 
   return (
@@ -59,6 +82,25 @@ export function NewsletterSignup() {
             <button type="submit" className="newsletter-btn" disabled={status === "loading"}>
               {status === "loading" ? "Signing up…" : "Sign up as a LiU AIS Member"}
             </button>
+
+            <button
+              type="button"
+              className="newsletter-secondary-btn"
+              onClick={handleCheckMembership}
+              disabled={status === "loading" || checkStatus === "loading"}
+            >
+              {checkStatus === "loading" ? "Checking membership…" : "Am I a member?"}
+            </button>
+
+            {checkStatus === "member" && (
+              <p className="newsletter-check-result">You are already a member.</p>
+            )}
+            {checkStatus === "not-member" && (
+              <p className="newsletter-check-result">We could not find that email yet. You can sign up above.</p>
+            )}
+            {checkStatus === "error" && (
+              <p className="newsletter-error">Enter a valid email, then try membership check again.</p>
+            )}
 
             {status === "error" && (
               <p className="newsletter-error">Something went wrong — please try again.</p>

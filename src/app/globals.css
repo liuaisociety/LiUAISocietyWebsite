@@ -760,6 +760,41 @@ body.light .mobile-link { color: #111111; }
   box-shadow: none;
 }
 
+.newsletter-secondary-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(64, 196, 255, 0.35);
+  background: rgba(64, 196, 255, 0.08);
+  color: #9bdfff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.newsletter-secondary-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  background: rgba(64, 196, 255, 0.14);
+}
+
+.newsletter-secondary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.newsletter-check-result {
+  width: 100%;
+  text-align: center;
+  color: rgba(155, 223, 255, 0.92);
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+
 /* Success state */
 .newsletter-success-wrap {
   padding: 16px 0 8px;
