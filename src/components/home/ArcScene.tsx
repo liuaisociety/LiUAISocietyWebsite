@@ -88,7 +88,7 @@ export default function ArcScene() {
     addLayer(35, 1.0,   4, 0x0088cc, 0.18, 150, "outer");
 
     // Star field
-    const starCount = 800;
+    const starCount = 1600;
     const starPositions = new Float32Array(starCount * 3);
     const starSizes = new Float32Array(starCount);
     const rng = (s: number) => { const x = Math.sin(s * 9301 + 49297) * 233280; return x - Math.floor(x); };
@@ -106,9 +106,9 @@ export default function ArcScene() {
     starGeo.setAttribute("size", new THREE.BufferAttribute(starSizes, 1));
     const starMat = new THREE.PointsMaterial({
       color: 0xaaddff,
-      size: 0.12,
+      size: 0.22,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.9,
       sizeAttenuation: true,
       blending: THREE.AdditiveBlending,
     });
@@ -155,8 +155,8 @@ export default function ArcScene() {
 
     function updateArcForScreenSize() {
       const w = window.innerWidth;
-      if (w <= 480) { group.scale.set(0.5, 0.5, 0.5); group.position.set(-2, 0, 0); camera.position.set(0, 0, 30); }
-      else if (w <= 768) { group.scale.set(0.85, 0.85, 0.85); group.position.set(-7, 0, 0); camera.position.set(0, 0, 30); }
+      if (w <= 480) { group.scale.set(0.5, 0.5, 0.5); group.position.set(0, 2.2, 0); camera.position.set(0, 0, 30); }
+      else if (w <= 768) { group.scale.set(0.85, 0.85, 0.85); group.position.set(0, 2.2, 0); camera.position.set(0, 0, 30); }
       else { group.scale.set(1, 1, 1); group.position.set(-6, 0, 0); camera.position.set(0, 0, 25); }
     }
     updateArcForScreenSize();
@@ -226,9 +226,9 @@ export default function ArcScene() {
 
     function getInitial() {
       const w = window.innerWidth;
-      if (w <= 480) return { scale: 0.5, posX: -2, camZ: 30 };
-      if (w <= 768) return { scale: 0.85, posX: -7, camZ: 30 };
-      return { scale: 1, posX: -6, camZ: 25 };
+      if (w <= 480) return { scale: 0.5, posX: 0, posY: 6.2, camZ: 30 };
+      if (w <= 768) return { scale: 0.65, posX: 0, posY: 7.2, camZ: 30 };
+      return { scale: 1, posX: -6, posY: 0, camZ: 25 };
     }
 
     let scrollTl: gsap.core.Timeline | null = null;
@@ -242,7 +242,7 @@ export default function ArcScene() {
       const initial = getInitial();
       const target = window.innerWidth > 1300 ? screenToWorld(50, 40) : screenToWorld(35, 30);
       group.scale.set(initial.scale, initial.scale, initial.scale);
-      group.position.set(initial.posX, 0, 0);
+      group.position.set(initial.posX, initial.posY, 0);
       rotationState.dampen = 1;
 
       scrollTl = gsap.timeline({
@@ -262,7 +262,7 @@ export default function ArcScene() {
 
             const fadeProg = Math.max(0, (self.progress - 0.7) / 0.3);
             if (canvas) canvas.style.opacity = String(1 - fadeProg);
-            starMat.opacity = 0.55 * (1 - self.progress);
+            starMat.opacity = 0.9 * (1 - self.progress);
             glowMat.opacity = 1 - self.progress;
             if (navArcLogo) navArcLogo.style.opacity = String(fadeProg);
           }

@@ -2,7 +2,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { client } from "@/lib/sanity";
 import { eventsQuery } from "@/lib/queries";
-import { EventCard } from "@/components/events/EventCard";
+import { HomeEventCard } from "@/components/home/HomeEventCard";
 import type { Event } from "@/types/event";
 
 export const revalidate = 60;
@@ -25,15 +25,15 @@ export default async function EventsPage() {
       <div className="about-content">
         <section className="about-intro">
           <h2 className="section-heading">Events</h2>
-          <p className="about-description">Lectures, workshops, company visits and more.</p>
+          <p className="about-description">Explore upcoming and past events including lectures, workshops, company visits and more.</p>
         </section>
 
         {upcoming.length > 0 && (
           <section className="about-section">
             <h3 className="career-section-title">Upcoming</h3>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="home-events-grid">
               {upcoming.map((event) => (
-                <EventCard key={event._id} event={event} />
+                <HomeEventCard key={event._id} event={event} />
               ))}
             </div>
           </section>
@@ -42,9 +42,9 @@ export default async function EventsPage() {
         {past.length > 0 && (
           <section className="about-section">
             <h3 className="career-section-title">Past Events</h3>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="home-events-grid">
               {past.map((event) => (
-                <EventCard key={event._id} event={event} />
+                <HomeEventCard key={event._id} event={event} past />
               ))}
             </div>
           </section>
@@ -55,6 +55,10 @@ export default async function EventsPage() {
             <p className="about-description">No events yet — check back soon.</p>
           </section>
         )}
+
+        <section className="about-section" style={{ textAlign: "center", paddingBottom: "80px" }}>
+          <a href="mailto:contact@liuais.com" className="suggest-event-btn">Suggest an event →</a>
+        </section>
       </div>
       <Footer />
     </>

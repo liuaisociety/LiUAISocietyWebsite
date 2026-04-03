@@ -26,7 +26,7 @@ export function HomeEventCard({ event, past }: { event: Event; past?: boolean })
             width={800}
             height={450}
             style={{ width: "100%", height: "auto", display: "block" }}
-            className="transition-transform duration-500 group-hover:scale-105"
+            className=""
           />
         ) : (
           <div className="home-event-card-placeholder" />
