@@ -130,11 +130,14 @@
 
 /* ===== SITE STYLES ===== */
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: #040D1C;
   color: #ffffff;
   font-family: Arial, sans-serif;
-  overflow-x: hidden;
 }
 
 body.light {

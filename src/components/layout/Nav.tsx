@@ -69,6 +69,7 @@ export function Nav({ light = false }: { light?: boolean }) {
     return () => {
       hamburger.removeEventListener("click", onHamburger);
       overlay.removeEventListener("click", closeMenu);
+      document.body.style.overflow = "";
     };
   }, []);
 
