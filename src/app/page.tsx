@@ -111,6 +111,15 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+          <div className="marquee marquee--mobile-only">
+            <div className="marquee-track marquee-track--reverse">
+              {allMarqueeImages.map((e, i) => (
+                <div key={i} className="event-card" style={{ backgroundImage: `url('/images/events/${e.img}')` }}>
+                  <span className="event-card-title">{e.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="info-section">

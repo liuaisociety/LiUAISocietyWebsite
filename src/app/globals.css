@@ -567,10 +567,15 @@ body.light .mobile-link { color: #111111; }
   background: linear-gradient(to left, #040D1C, transparent);
 }
 .marquee { width: 100%; overflow: hidden; }
+.marquee--mobile-only { display: none; }
 .marquee-track {
   display: flex; gap: 20px;
   width: max-content;
   animation: marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+.marquee-track--reverse {
+  animation-direction: reverse;
 }
 .marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee-scroll {
@@ -1282,8 +1287,9 @@ body.light .footer-socials a:hover { color: #000000; }
   .info-section { padding: 80px 24px; }
   .section-heading { font-size: 0.85rem; }
   .section-text { font-size: 1rem; line-height: 1.7; }
-  .event-card { width: 260px; height: 180px; }
-  .marquee-track { gap: 14px; }
+  .event-card { width: 200px; height: 140px; }
+  .marquee-track { gap: 12px; }
+  .marquee--mobile-only { display: block; margin-top: 12px; }
   .events-section { padding: 80px 0; }
   .career-grid { grid-template-columns: 1fr; }
   .members-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; }
