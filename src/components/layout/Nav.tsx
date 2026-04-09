@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 export function Nav({ light = false }: { light?: boolean }) {
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +72,7 @@ export function Nav({ light = false }: { light?: boolean }) {
     };
   }, []);
 
-  const navClass = `main-nav${light ? " scrolled light" : ""}`;
+  const navClass = ["main-nav", (!isHomePage || light) && "scrolled", light && "light"].filter(Boolean).join(" ");
 
   return (
     <>
