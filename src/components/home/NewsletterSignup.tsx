@@ -96,7 +96,7 @@ export function NewsletterSignup() {
               <p className="newsletter-check-result">You are already a member.</p>
             )}
             {checkStatus === "not-member" && (
-              <p className="newsletter-check-result">We could not find that email yet. You can sign up above.</p>
+              <p className="newsletter-check-result">We could not find that email. You can sign up above.</p>
             )}
             {checkStatus === "error" && (
               <p className="newsletter-error">Enter a valid email, then try membership check again.</p>

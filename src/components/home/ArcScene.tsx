@@ -213,8 +213,6 @@ export default function ArcScene() {
 
     // Scroll animations
     const nav = document.querySelector(".main-nav");
-    const heroTitle = document.querySelector(".hero-title");
-    const navArcLogo = document.querySelector(".nav-arc-logo") as HTMLElement | null;
 
     function screenToWorld(sx: number, sy: number) {
       const vFov = camera.fov * Math.PI / 180;
@@ -264,7 +262,6 @@ export default function ArcScene() {
             if (canvas) canvas.style.opacity = String(1 - fadeProg);
             starMat.opacity = 0.9 * (1 - self.progress);
             glowMat.opacity = 1 - self.progress;
-            if (navArcLogo) navArcLogo.style.opacity = String(fadeProg);
           }
         }
       });
@@ -272,7 +269,7 @@ export default function ArcScene() {
       scrollTl.to(group.scale, { x: 0.07, y: 0.07, z: 0.07, ease: "none" }, 0);
       scrollTl.to(group.position, { x: target.x, y: target.y, z: 0, ease: "none" }, 0);
       scrollTl.to(rotationState, { dampen: 0, ease: "none" }, 0);
-      scrollTl.to(heroTitle, { opacity: 0, y: -40, ease: "none" }, 0);
+
 
       bgTl = gsap.timeline();
     }

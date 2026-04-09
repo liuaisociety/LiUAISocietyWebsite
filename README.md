@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LiU AI Society — Website
 
-## Getting Started
+![LiU AI Society](./public/images/LiUAIS.png)
 
-First, run the development server:
+The official website for [LiU AI Society](https://liuais.com), the student association for artificial intelligence at Linköping University. Built with Next.js, Three.js, and Sanity.
 
+---
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| 3D / Animation | Three.js + GSAP |
+| CMS | Sanity v5 |
+| Email | Resend |
+| Newsletter | Kit (ConvertKit) |
+| Styling | Plain CSS (globals.css) |
+| Language | TypeScript |
+
+---
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Home — animated sigmoid arc hero, events, vision, partner section, newsletter signup |
+| `/about` | Board members and founders |
+| `/events` | Upcoming and past events with suggest-event modal |
+| `/courses` | AI & ML courses at LiU |
+| `/career` | Job listings scraped from LiU + thesis opportunities |
+| `/logo` | Isolated logo view (arc + wordmark) |
+| `/studio` | Sanity Studio (CMS) |
+
+---
+
+## Getting started
+
+**1. Install dependencies**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Set up environment variables**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file in the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Sanity
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
 
-## Learn More
+# Kit (ConvertKit) — newsletter signups
+KIT_API_KEY=your_kit_api_key
+KIT_FORM_ID=your_kit_form_id
 
-To learn more about Next.js, take a look at the following resources:
+# Resend — transactional email (event suggestions, partner enquiries)
+RESEND_API_KEY=your_resend_api_key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**3. Run the dev server**
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## CMS — Sanity
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Content (events) is managed through Sanity Studio at `/studio`. To set up:
+
+1. Create a project at [sanity.io](https://sanity.io)
+2. Add your project ID and dataset to `.env.local`
+3. Deploy the studio or use it locally at `/studio`
+
+Event fields: title, date, location, image, tags, Luma URL.
+
+---
+
+## Email setup
+
+Two contact forms send email via [Resend](https://resend.com):
+
+- **Suggest an event** (`/api/suggest-event`) — from the Events page
+- **Partner enquiry** (`/api/partner`) — from the home page partner section
+
+---
+
+## Newsletter
+
+Member signups and membership checks go through the [Kit](https://kit.com) API (`/api/newsletter`). The form collects name, email, LiU ID, program, and graduation year.
+
+---
+
+## Contact
+
+[contact@liuais.com](mailto:contact@liuais.com)

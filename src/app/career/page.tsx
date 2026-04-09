@@ -48,12 +48,12 @@ export default async function CareerPage() {
         <section className="career-section">
           <h3 className="career-section-title">Thesis Opportunities</h3>
           <div className="career-grid">
-            <a href="#" className="career-card">
+            <div className="career-card">
               <span className="career-tag thesis">Thesis</span>
               <h4 className="career-card-title">Example: Reinforcement Learning for Autonomous Navigation</h4>
               <p className="career-card-meta">Supervisor: Prof. Example &middot; IDA, LiU</p>
               <p className="career-card-desc">Investigating novel RL approaches for real-time path planning in dynamic environments. Suitable for M.Sc. students in CS or AI.</p>
-            </a>
+            </div>
           </div>
         </section>
       </div>

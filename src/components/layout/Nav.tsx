@@ -15,6 +15,7 @@ export function Nav({ light = false }: { light?: boolean }) {
       return () => document.body.classList.remove("light");
     }
   }, [light]);
+
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { client } from "@/lib/sanity";
 import { eventsQuery } from "@/lib/queries";
 import { HomeEventCard } from "@/components/home/HomeEventCard";
+import { SuggestEventButton } from "@/components/events/SuggestEventButton";
 import type { Event } from "@/types/event";
 
 export const revalidate = 60;
@@ -57,7 +58,7 @@ export default async function EventsPage() {
         )}
 
         <section className="about-section" style={{ textAlign: "center", paddingBottom: "80px" }}>
-          <a href="mailto:contact@liuais.com" className="suggest-event-btn">Suggest an event →</a>
+          <SuggestEventButton />
         </section>
       </div>
       <Footer />

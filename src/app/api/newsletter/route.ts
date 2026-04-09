@@ -22,13 +22,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Newsletter not configured" }, { status: 500 });
   }
 
-  const res = await fetch(`https://api.kit.com/v4/subscribers?email_address=${encodeURIComponent(email)}&status=all`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json", "X-Kit-Api-Key": apiKey },
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(`https://api.kit.com/v4/subscribers?email_address=${encodeURIComponent(email)}&status=all`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", "X-Kit-Api-Key": apiKey },
+      cache: "no-store",
+    });
+  } catch (err) {
+    console.error("Kit API fetch error:", err);
+    return NextResponse.json({ error: "Membership lookup failed" }, { status: 502 });
+  }
 
   if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(`Kit API error ${res.status}:`, text);
     return NextResponse.json({ error: "Membership lookup failed" }, { status: 502 });
   }
 
@@ -60,18 +68,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Newsletter not configured" }, { status: 500 });
   }
 
-  const res = await fetch("https://api.kit.com/v4/subscribers", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Kit-Api-Key": apiKey },
-    body: JSON.stringify({
-      email_address: email,
-      first_name,
-      fields: { last_name, liu_id, program, exam_year },
-      form_ids: [Number(formId)],
-    }),
-  });
+  let res: Response;
+  try {
+    res = await fetch("https://api.kit.com/v4/subscribers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Kit-Api-Key": apiKey },
+      body: JSON.stringify({
+        email_address: email,
+        first_name,
+        fields: { last_name, liu_id, program, exam_year },
+        form_ids: [Number(formId)],
+      }),
+    });
+  } catch (err) {
+    console.error("Kit API fetch error:", err);
+    return NextResponse.json({ error: "Subscription failed" }, { status: 502 });
+  }
 
   if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(`Kit API error ${res.status}:`, text);
     return NextResponse.json({ error: "Subscription failed" }, { status: 502 });
   }
 

@@ -17,6 +17,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { HomeEventCard } from "@/components/home/HomeEventCard";
 import { NewsletterSignup } from "@/components/home/NewsletterSignup";
+import { PartnerSection } from "@/components/home/PartnerSection";
 import { client } from "@/lib/sanity";
 import { eventsQuery } from "@/lib/queries";
 import type { Event } from "@/types/event";
@@ -120,6 +121,7 @@ export default async function HomePage() {
       </div>
 
       <NewsletterSignup />
+      <PartnerSection />
       <Footer />
     </>
   );
