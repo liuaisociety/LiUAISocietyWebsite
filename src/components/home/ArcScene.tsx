@@ -130,7 +130,7 @@ export default function ArcScene() {
 
     // Shooting stars
     const shootingStarsList: ShootingStar[] = [];
-    let nextStarSpawn = 5; // first spawn after 5s, then every ~10s
+    let nextStarSpawn = 1; // first spawn after 1s, then every ~10s
 
     // Trail texture: gaussian cross-section (white core → blue glow → transparent edges)
     // U axis = along trail (0=tail, 1=head), V axis = across width (0=edge, 0.5=center, 1=edge)
