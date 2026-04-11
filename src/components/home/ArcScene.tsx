@@ -50,6 +50,19 @@ function createArcCurve(maxOffset: number, seed: number) {
 
 type LineData = { type: string; baseOpacity: number };
 
+type ShootingStar = {
+  mesh: THREE.Mesh;
+  sprite: THREE.Sprite;
+  head: THREE.Vector3;
+  dir: THREE.Vector3;
+  speed: number;
+  trailLen: number;
+  totalDist: number;
+  maxDist: number;
+  meshMat: THREE.MeshBasicMaterial;
+  spriteMat: THREE.SpriteMaterial;
+};
+
 export default function ArcScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
@@ -115,6 +128,109 @@ export default function ArcScene() {
     const stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
+    // Shooting stars
+    const shootingStarsList: ShootingStar[] = [];
+    let nextStarSpawn = 5; // first spawn after 5s, then every ~10s
+
+    // Trail texture: gaussian cross-section (white core → blue glow → transparent edges)
+    // U axis = along trail (0=tail, 1=head), V axis = across width (0=edge, 0.5=center, 1=edge)
+    const shootingStarTrailTex = (() => {
+      const W = 256, H = 64;
+      const img = new ImageData(W, H);
+      for (let x = 0; x < W; x++) {
+        const u = x / (W - 1);
+        const lFade = Math.pow(u, 1.8); // length fade: transparent at tail, bright at head
+        for (let y = 0; y < H; y++) {
+          const v = (y / (H - 1) - 0.5) * 2; // -1 (edge) to 1 (edge), 0 = center
+          const core = Math.exp(-v * v / 0.015); // very narrow bright white core
+          const glow = Math.exp(-v * v / 0.25);  // wider soft blue glow
+          const alpha = lFade * Math.min(1, core * 0.95 + glow * 0.4);
+          const idx = (y * W + x) * 4;
+          img.data[idx + 0] = Math.round(lFade * Math.min(255, (core * 255 + glow * 80)));  // R
+          img.data[idx + 1] = Math.round(lFade * Math.min(255, (core * 255 + glow * 100))); // G
+          img.data[idx + 2] = Math.round(lFade * Math.min(255, (core * 255 + glow * 220))); // B: extra blue in glow
+          img.data[idx + 3] = Math.round(alpha * 255);
+        }
+      }
+      const c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      c.getContext("2d")!.putImageData(img, 0, 0);
+      return new THREE.CanvasTexture(c);
+    })();
+
+    // Head glow texture: radial gradient for the meteor head orb
+    const shootingStarGlowTex = (() => {
+      const c = document.createElement("canvas");
+      c.width = 64; c.height = 64;
+      const gctx = c.getContext("2d")!;
+      const g = gctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0,    "rgba(255, 255, 255, 1)");
+      g.addColorStop(0.12, "rgba(220, 240, 255, 0.95)");
+      g.addColorStop(0.35, "rgba(100, 180, 255, 0.5)");
+      g.addColorStop(0.7,  "rgba(40, 100, 255, 0.15)");
+      g.addColorStop(1,    "rgba(0, 40, 180, 0)");
+      gctx.fillStyle = g;
+      gctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+
+    function spawnShootingStar(spawnTime: number) {
+      const r = () => Math.random();
+
+      // Start within the visible frustum (camera at z=25, FOV=50 → ~±11 Y, ±20 X at z=0)
+      const startX = (r() - 0.5) * 34;
+      const startY = -9 + r() * 18;
+      const startZ = -10 + r() * 10;
+
+      // Direction: mostly horizontal with a gentle downward drift
+      const dx = (r() > 0.5 ? 1 : -1) * (0.6 + r() * 0.4);
+      const dy = -(0.04 + r() * 0.18);
+      const dz = (r() - 0.5) * 0.15;
+      const dir = new THREE.Vector3(dx, dy, dz).normalize();
+
+      const trailLen = 9 + r() * 9;
+      const trailWidth = 0.28 + r() * 0.1; // world units — controls apparent thickness
+      const head = new THREE.Vector3(startX, startY, startZ);
+
+      // Trail: PlaneGeometry quad, local X = trail direction, local Y = perpendicular to camera
+      // PlaneGeometry(length, height): U 0→1 maps to X −len/2 → +len/2 (tail → head after rotation)
+      const geo = new THREE.PlaneGeometry(trailLen, trailWidth);
+      const meshMat = new THREE.MeshBasicMaterial({
+        map: shootingStarTrailTex,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(geo, meshMat);
+      scene.add(mesh);
+
+      // Head: small glowing sprite at the meteor tip
+      const spriteMat = new THREE.SpriteMaterial({
+        map: shootingStarGlowTex,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const sprite = new THREE.Sprite(spriteMat);
+      sprite.scale.set(0.8, 0.8, 1);
+      sprite.position.copy(head);
+      scene.add(sprite);
+
+      const maxDist = 20 + r() * 18;
+      shootingStarsList.push({
+        mesh, sprite,
+        head: head.clone(), dir,
+        speed: 10 + r() * 10,
+        trailLen,
+        totalDist: 0,
+        maxDist,
+        meshMat, spriteMat,
+      });
+      nextStarSpawn = spawnTime + 8 + Math.random() * 4;
+    }
 
     // Radial glow behind the arc
     const glowCanvas = document.createElement("canvas");
@@ -172,10 +288,59 @@ export default function ArcScene() {
 
     const clock = new THREE.Clock();
     let animId: number;
+    let prevTime = 0;
 
     function animate() {
       animId = requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
+      const dt = Math.min(time - prevTime, 0.05);
+      prevTime = time;
+
+      // Spawn shooting stars
+      if (time >= nextStarSpawn) spawnShootingStar(time);
+
+      // Update shooting stars
+      for (let si = shootingStarsList.length - 1; si >= 0; si--) {
+        const star = shootingStarsList[si];
+        star.totalDist += star.speed * dt;
+        star.head.addScaledVector(star.dir, star.speed * dt);
+
+        // Trail mesh: center at trail midpoint, oriented along dir and facing camera
+        const mid = star.head.clone().addScaledVector(star.dir, -star.trailLen / 2);
+        star.mesh.position.copy(mid);
+
+        // Build orientation: local X = trail direction, local Y = perpendicular to trail & camera
+        const toCam = camera.position.clone().sub(mid).normalize();
+        let widthVec = new THREE.Vector3().crossVectors(star.dir, toCam);
+        if (widthVec.lengthSq() < 0.0001) widthVec.set(0, 1, 0);
+        else widthVec.normalize();
+        const normalVec = new THREE.Vector3().crossVectors(star.dir, widthVec);
+        star.mesh.setRotationFromMatrix(
+          new THREE.Matrix4().makeBasis(star.dir, widthVec, normalVec)
+        );
+
+        // Head sprite
+        star.sprite.position.copy(star.head);
+
+        // Fade in over first 3 units, fade out over last 5 units
+        const fadeIn  = Math.min(star.totalDist / 3, 1);
+        const fadeOut = star.totalDist > star.maxDist - 5
+          ? Math.max(0, 1 - (star.totalDist - (star.maxDist - 5)) / 5)
+          : 1;
+        const opacity = fadeIn * fadeOut;
+        star.meshMat.opacity = opacity * 0.55;
+        star.spriteMat.opacity = opacity * 0.7;
+
+        if (star.totalDist > star.maxDist + star.trailLen) {
+          scene.remove(star.mesh);
+          scene.remove(star.sprite);
+          star.mesh.geometry.dispose();
+          star.meshMat.dispose();
+          star.spriteMat.dispose();
+          shootingStarsList.splice(si, 1);
+        }
+      }
+
       lines.forEach((line, i) => {
         (line.material as THREE.LineBasicMaterial).opacity = line.userData.baseOpacity + Math.sin(time * 8 + i * 0.5) * 0.1;
       });
@@ -294,6 +459,15 @@ export default function ArcScene() {
       scrollTl?.kill();
       bgTl?.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
+      shootingStarsList.forEach(s => {
+        scene.remove(s.mesh);
+        scene.remove(s.sprite);
+        s.mesh.geometry.dispose();
+        s.meshMat.dispose();
+        s.spriteMat.dispose();
+      });
+      shootingStarTrailTex.dispose();
+      shootingStarGlowTex.dispose();
       renderer.dispose();
     };
   }, []);
