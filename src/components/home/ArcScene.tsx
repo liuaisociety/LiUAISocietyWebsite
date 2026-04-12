@@ -130,7 +130,7 @@ export default function ArcScene() {
 
     // Shooting stars
     const shootingStarsList: ShootingStar[] = [];
-    let nextStarSpawn = 5; // first spawn after 5s, then every ~10s
+    let nextStarSpawn = 0.5; // first spawn after 0.5s, then every ~10s
 
     // Trail texture: gaussian cross-section (white core → blue glow → transparent edges)
     // U axis = along trail (0=tail, 1=head), V axis = across width (0=edge, 0.5=center, 1=edge)
@@ -279,6 +279,7 @@ export default function ArcScene() {
 
     const rotationState = { dampen: 1 };
     const mouseOffset = { targetX: 0, targetY: 0, currentX: 0, currentY: 0 };
+    const basePosition = { x: 0, y: 0 };
 
     const onMouseMove = (e: MouseEvent) => {
       mouseOffset.targetX = -(e.clientX / window.innerWidth - 0.5) * 1.8;
@@ -286,18 +287,19 @@ export default function ArcScene() {
     };
     document.addEventListener("mousemove", onMouseMove);
 
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
     let animId: number;
     let prevTime = 0;
 
     function animate() {
       animId = requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
+      timer.update();
+      const time = timer.getElapsed();
       const dt = Math.min(time - prevTime, 0.05);
       prevTime = time;
 
       // Spawn shooting stars
-      if (time >= nextStarSpawn) spawnShootingStar(time);
+      if (time >= nextStarSpawn && shootingStarsList.length === 0) spawnShootingStar(time);
 
       // Update shooting stars
       for (let si = shootingStarsList.length - 1; si >= 0; si--) {
@@ -351,6 +353,15 @@ export default function ArcScene() {
       mouseOffset.currentY += (mouseOffset.targetY - mouseOffset.currentY) * 0.03;
       arcContainer.position.x = mouseOffset.currentX;
       arcContainer.position.y = mouseOffset.currentY;
+
+      // Scroll with page: move arc up in world space as user scrolls down
+      const worldHeight = 2 * Math.tan((camera.fov * Math.PI / 180) / 2) * camera.position.z;
+      group.position.y = basePosition.y + (window.scrollY / window.innerHeight) * worldHeight;
+
+      // Fade out stars and canvas as user scrolls down
+      const scrollProgress = Math.min(window.scrollY / (window.innerHeight * 0.8), 1);
+      starMat.opacity = 0.9 * (1 - scrollProgress);
+      if (canvas) canvas.style.opacity = String(1 - Math.max(0, (scrollProgress - 0.7) / 0.3));
       renderer.render(scene, camera);
     }
     animate();
@@ -379,14 +390,6 @@ export default function ArcScene() {
     // Scroll animations
     const nav = document.querySelector(".main-nav");
 
-    function screenToWorld(sx: number, sy: number) {
-      const vFov = camera.fov * Math.PI / 180;
-      const dist = camera.position.z;
-      const h = 2 * Math.tan(vFov / 2) * dist;
-      const w = h * camera.aspect;
-      return { x: (sx / window.innerWidth - 0.5) * w, y: -(sy / window.innerHeight - 0.5) * h };
-    }
-
     function getInitial() {
       const w = window.innerWidth;
       if (w <= 480) return { scale: 0.5, posX: 0, posY: 6.2, camZ: 30 };
@@ -403,7 +406,8 @@ export default function ArcScene() {
       ScrollTrigger.getAll().forEach(t => t.kill());
 
       const initial = getInitial();
-      const target = window.innerWidth > 1300 ? screenToWorld(50, 40) : screenToWorld(35, 30);
+      basePosition.x = initial.posX;
+      basePosition.y = initial.posY;
       group.scale.set(initial.scale, initial.scale, initial.scale);
       group.position.set(initial.posX, initial.posY, 0);
       rotationState.dampen = 1;
@@ -417,24 +421,9 @@ export default function ArcScene() {
           onUpdate(self) {
             if (self.progress > 0.3) nav?.classList.add("scrolled");
             else nav?.classList.remove("scrolled");
-
-            const coreWhite = new THREE.Color(0xffffff);
-            const coreCyan = new THREE.Color(0x00bbff);
-            const coreColor = coreWhite.clone().lerp(coreCyan, self.progress);
-            lines.forEach(l => { if (l.userData.type === "brightest") (l.material as THREE.LineBasicMaterial).color.copy(coreColor); });
-
-            const fadeProg = Math.max(0, (self.progress - 0.7) / 0.3);
-            if (canvas) canvas.style.opacity = String(1 - fadeProg);
-            starMat.opacity = 0.9 * (1 - self.progress);
-            glowMat.opacity = 1 - self.progress;
           }
         }
       });
-
-      scrollTl.to(group.scale, { x: 0.07, y: 0.07, z: 0.07, ease: "none" }, 0);
-      scrollTl.to(group.position, { x: target.x, y: target.y, z: 0, ease: "none" }, 0);
-      scrollTl.to(rotationState, { dampen: 0, ease: "none" }, 0);
-
 
       bgTl = gsap.timeline();
     }
