@@ -14,7 +14,7 @@ export default function PrivacyPage() {
       <Nav />
       <div className="about-content about-page">
         <section className="about-intro">
-          <h1 className="section-heading">Privacy Policy</h1>
+          <h1 className="page-heading">Privacy Policy</h1>
           <p className="about-description">Last updated: April 2026</p>
         </section>
 

@@ -397,6 +397,13 @@ body.light .mobile-link { color: #111111; }
   max-width: 700px; letter-spacing: 0.01em;
 }
 
+.page-heading {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 2rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: #fff; margin-bottom: 1.5rem;
+}
+
 /* Home Events Section */
 .home-events-section {
   padding: 80px 40px 140px;
@@ -420,6 +427,13 @@ body.light .mobile-link { color: #111111; }
   display: flex; align-items: baseline;
   justify-content: space-between;
   margin-bottom: 3rem;
+}
+.home-section-title {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 1.4rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 0;
 }
 .home-events-link {
   font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
@@ -1251,6 +1265,58 @@ body.light .footer-socials a:hover { color: #000000; }
 .member-icons { display: flex; gap: 10px; align-items: center; }
 .member-icon-link { color: rgba(255,255,255,0.35); transition: color 0.2s ease; display: flex; align-items: center; }
 .member-icon-link:hover { color: #40c4ff; }
+
+/* ── Project Cards ──────────────────────────────────────────────────────── */
+.project-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+  position: relative;
+}
+.project-card:hover {
+  box-shadow: 0 12px 40px rgba(0,140,255,0.18), 0 2px 8px rgba(0,0,0,0.4);
+  border-color: rgba(0,160,255,0.35);
+  transform: translateY(-4px);
+}
+.project-card-img { position: relative; overflow: hidden; background: #071525; line-height: 0; }
+.project-card-img img { display: block; }
+.project-card-placeholder { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #0d2040 0%, #071525 60%, #0a1535 100%); }
+.project-card-content { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; flex: 1; }
+.project-card-title { font-size: 1rem; font-weight: 600; color: #ffffff; line-height: 1.45; letter-spacing: 0.01em; }
+.project-card-desc {
+  font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.project-contributors { display: flex; align-items: center; margin-top: auto; padding-top: 6px; }
+.contributor-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid #0a0f1e;
+  margin-right: -8px; object-fit: cover;
+  background: #0d2040;
+}
+.project-contributors .contributor-avatar:last-child { margin-right: 0; }
+.contributor-name { font-size: 12px; color: rgba(255,255,255,0.45); margin-right: 6px; }
+
+/* Project Filters */
+.project-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.project-filter-pill {
+  padding: 5px 14px; border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.55);
+  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.02em;
+  cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.project-filter-pill:hover { border-color: rgba(0,160,255,0.45); color: #ffffff; }
+.project-filter-pill.active {
+  background: rgba(0,140,255,0.12);
+  border-color: rgba(0,160,255,0.5);
+  color: #40c4ff;
+}
 
 /* Career */
 .career-contact { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }

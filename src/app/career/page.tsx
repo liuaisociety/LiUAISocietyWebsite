@@ -25,7 +25,7 @@ export default async function CareerPage() {
       <Nav />
       <div className="career-content about-page">
         <section className="career-intro">
-          <h1 className="section-heading">Career</h1>
+          <h1 className="page-heading">Career</h1>
           <p className="career-description">Explore current job opportunities offered by leading organizations and research groups.</p>
           <p className="career-contact">Want to list a job or thesis opportunity? Reach out to <a href="mailto:contact@liuais.com">contact@liuais.com</a></p>
         </section>

@@ -19,18 +19,26 @@ import { HomeEventCard } from "@/components/home/HomeEventCard";
 import { NewsletterSignup } from "@/components/home/NewsletterSignup";
 import { PartnerSection } from "@/components/home/PartnerSection";
 import { client } from "@/lib/sanity";
-import { eventsQuery } from "@/lib/queries";
+import { eventsQuery, projectsQuery } from "@/lib/queries";
+import { ProjectCard } from "@/components/projects/ProjectCard";
 import type { Event } from "@/types/event";
+import type { Project } from "@/types/project";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
   let events: Event[] = [];
+  let projects: Project[] = [];
   try {
-    events = await client.fetch(eventsQuery);
+    [events, projects] = await Promise.all([
+      client.fetch(eventsQuery),
+      client.fetch(projectsQuery),
+    ]);
   } catch {
     // Sanity not configured or unreachable
   }
+
+  const featuredProjects = projects.slice(0, 3);
 
   const now = new Date();
   const upcoming = events
@@ -65,7 +73,7 @@ export default async function HomePage() {
         <div className="light-content">
         <section className="home-events-section">
           <div className="home-events-header">
-            <h2 className="section-heading">Events</h2>
+            <h2 className="home-section-title">Events</h2>
             <Link href="/events" className="home-events-link">See all →</Link>
           </div>
 
@@ -95,6 +103,20 @@ export default async function HomePage() {
             <p className="section-text">No events yet — check back soon.</p>
           )}
         </section>
+
+        {featuredProjects.length > 0 && (
+          <section className="home-events-section">
+            <div className="home-events-header">
+              <h2 className="home-section-title">Projects</h2>
+              <Link href="/projects" className="home-events-link">See all →</Link>
+            </div>
+            <div className="home-events-grid">
+              {featuredProjects.map((project) => (
+                <ProjectCard key={project._id} project={project} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="info-section">
           <h2 className="section-heading">Who We Are</h2>

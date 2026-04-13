@@ -81,7 +81,7 @@ export default function CoursesPage() {
       <Nav />
       <div className="courses-content">
         <section className="courses-intro">
-          <h1 className="section-heading">Courses</h1>
+          <h1 className="page-heading">Courses</h1>
           <p className="courses-description">Discover AI and machine learning courses offered at Linköping University to build your expertise.</p>
         </section>
 

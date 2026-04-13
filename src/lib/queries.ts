@@ -45,3 +45,16 @@ export const eventBySlugQuery = groq`
 export const allEventSlugsQuery = groq`
   *[_type == "event" && defined(slug.current)] { "slug": slug.current }
 `;
+
+export const projectsQuery = groq`
+  *[_type == "project"] | order(_createdAt desc) {
+    _id,
+    title,
+    description,
+    coverImage,
+    githubUrl,
+    techStack,
+    contributors,
+    status,
+  }
+`;

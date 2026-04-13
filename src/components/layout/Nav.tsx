@@ -88,6 +88,7 @@ export function Nav({ light = false }: { light?: boolean }) {
           <Link href="/" className="nav-link">Home</Link>
           <Link href="/about" className="nav-link">About</Link>
           <Link href="/events" className="nav-link">Events</Link>
+          <Link href="/projects" className="nav-link">Projects</Link>
           <Link href="/courses" className="nav-link">Courses</Link>
           <Link href="/career" className="nav-link">Career</Link>
         </div>
@@ -107,6 +108,7 @@ export function Nav({ light = false }: { light?: boolean }) {
         <Link href="/" className="mobile-link">Home</Link>
         <Link href="/about" className="mobile-link">About</Link>
         <Link href="/events" className="mobile-link">Events</Link>
+        <Link href="/projects" className="mobile-link">Projects</Link>
         <Link href="/courses" className="mobile-link">Courses</Link>
         <Link href="/career" className="mobile-link">Career</Link>
       </div>

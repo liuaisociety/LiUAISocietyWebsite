@@ -76,7 +76,7 @@ export default function AboutPage() {
       <Nav />
       <div className="about-content about-page">
         <section className="about-intro">
-          <h1 className="section-heading">The Board</h1>
+          <h1 className="page-heading">The Board</h1>
           <p className="about-description">Meet the dedicated team driving LiU AI Society&apos;s mission to connect students with the world of artificial intelligence.</p>
         </section>
 

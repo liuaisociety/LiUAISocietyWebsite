@@ -38,7 +38,7 @@ export default async function EventsPage() {
       <Nav />
       <div className="about-content">
         <section className="about-intro">
-          <h1 className="section-heading">Events</h1>
+          <h1 className="page-heading">Events</h1>
           <p className="about-description">Explore upcoming and past events including lectures, workshops, company visits and more.</p>
         </section>
 
