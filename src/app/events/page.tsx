@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { client } from "@/lib/sanity";
+
+export const metadata: Metadata = {
+  title: "Events | LiU AI Society",
+  description:
+    "Browse upcoming and past AI events at Linköping University — hackathons, company visits, guest lectures, and workshops organised by LiU AI Society.",
+  openGraph: {
+    title: "Events | LiU AI Society",
+    description:
+      "Browse upcoming and past AI events at Linköping University — hackathons, company visits, guest lectures, and workshops organised by LiU AI Society.",
+    url: "https://liuais.se/events",
+  },
+};
 import { eventsQuery } from "@/lib/queries";
 import { HomeEventCard } from "@/components/home/HomeEventCard";
 import { SuggestEventButton } from "@/components/events/SuggestEventButton";
@@ -25,7 +38,7 @@ export default async function EventsPage() {
       <Nav />
       <div className="about-content">
         <section className="about-intro">
-          <h2 className="section-heading">Events</h2>
+          <h1 className="section-heading">Events</h1>
           <p className="about-description">Explore upcoming and past events including lectures, workshops, company visits and more.</p>
         </section>
 

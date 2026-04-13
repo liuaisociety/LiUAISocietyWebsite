@@ -7,8 +7,37 @@ import { Footer } from "@/components/layout/Footer";
 import { client, urlFor } from "@/lib/sanity";
 import { eventBySlugQuery, allEventSlugsQuery } from "@/lib/queries";
 import type { Event } from "@/types/event";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  let event: Event | null = null;
+  try {
+    event = await client.fetch(eventBySlugQuery, { slug });
+  } catch {}
+  if (!event) return {};
+
+  const description = event.description?.slice(0, 155) ?? undefined;
+  const ogImage = event.image
+    ? urlFor(event.image).width(1200).height(630).quality(85).url()
+    : undefined;
+
+  return {
+    title: `${event.title} | LiU AI Society`,
+    description,
+    openGraph: {
+      title: event.title,
+      description,
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
+    },
+  };
+}
 
 export async function generateStaticParams() {
   try {
@@ -48,8 +77,36 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const isPast = new Date(event.date) < new Date();
   const isCareer = tags.includes("career");
 
+  const eventJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    startDate: event.date,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    description: event.description ?? undefined,
+    ...(event.location
+      ? { location: { "@type": "Place", name: event.location } }
+      : {}),
+    ...(event.lumaUrl
+      ? { offers: { "@type": "Offer", url: event.lumaUrl, availability: "https://schema.org/InStock" } }
+      : {}),
+    organizer: {
+      "@type": "Organization",
+      name: "LiU AI Society",
+      url: "https://liuais.se",
+    },
+    ...(event.image
+      ? { image: urlFor(event.image).width(1200).quality(85).url() }
+      : {}),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
       <Nav />
       <div className="about-content">
 
@@ -303,11 +360,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           <section className="about-section">
             <h2 className="section-heading">Photos</h2>
             <div className="event-gallery">
-              {event.gallery.map((img) => (
+              {event.gallery.map((img, idx) => (
                 <div key={img._key} className="event-gallery-item">
                   <Image
                     src={urlFor(img).width(600).height(400).quality(85).url()}
-                    alt=""
+                    alt={`${event.title} — photo ${idx + 1}`}
                     width={600}
                     height={400}
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}

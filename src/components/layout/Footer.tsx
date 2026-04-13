@@ -5,8 +5,8 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-logo">
-        <Image src="/images/LiUAISlogo.svg" alt="LiU AI Society" width={260} height={199} priority />
-        <Image src="/images/AI%20Society%20LiU.svg" alt="LiU AI Society" width={656} height={188} priority />
+        <Image src="/images/LiUAISlogo.svg" alt="" width={260} height={199} />
+        <Image src="/images/AI%20Society%20LiU.svg" alt="LiU AI Society" width={656} height={188} />
       </div>
       <div className="footer-socials">
         <Link href="https://www.facebook.com/liuaisociety" target="_blank" rel="noopener" aria-label="Facebook">
@@ -22,7 +22,10 @@ export function Footer() {
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
         </Link>
       </div>
-      <p className="footer-copy">&copy; 2026 LiU AI Society. All rights reserved.</p>
+      <p className="footer-copy">
+        &copy; 2026 LiU AI Society. All rights reserved.{" "}
+        <Link href="/privacy" className="footer-privacy-link">Privacy Policy</Link>
+      </p>
     </footer>
   );
 }

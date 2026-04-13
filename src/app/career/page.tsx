@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { fetchLiUJobs } from "@/lib/liuJobs";
+
+export const metadata: Metadata = {
+  title: "Career | LiU AI Society",
+  description:
+    "Explore AI and machine learning job openings, internships, and thesis opportunities at Linköping University — curated by LiU AI Society for students in CS and AI.",
+  openGraph: {
+    title: "Career | LiU AI Society",
+    description:
+      "Explore AI and machine learning job openings, internships, and thesis opportunities at Linköping University — curated by LiU AI Society for students in CS and AI.",
+    url: "https://liuais.se/career",
+  },
+};
 
 export const revalidate = 3600;
 
@@ -12,7 +25,7 @@ export default async function CareerPage() {
       <Nav />
       <div className="career-content about-page">
         <section className="career-intro">
-          <h2 className="section-heading">Career</h2>
+          <h1 className="section-heading">Career</h1>
           <p className="career-description">Explore current job opportunities offered by leading organizations and research groups.</p>
           <p className="career-contact">Want to list a job or thesis opportunity? Reach out to <a href="mailto:contact@liuais.com">contact@liuais.com</a></p>
         </section>

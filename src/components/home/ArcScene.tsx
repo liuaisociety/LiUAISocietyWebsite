@@ -287,6 +287,13 @@ export default function ArcScene() {
     };
     document.addEventListener("mousemove", onMouseMove);
 
+    // Cursor glow state — declared here so animate() closure can access them
+    const glow = glowRef.current;
+    let glowTargetX = 0, glowTargetY = 0, glowCurrentX = 0, glowCurrentY = 0, lastGlowTime = performance.now();
+    const lagMs = 150;
+    const onMouseGlow = (e: MouseEvent) => { glowTargetX = e.clientX; glowTargetY = e.clientY; };
+    document.addEventListener("mousemove", onMouseGlow);
+
     const timer = new THREE.Timer();
     let animId: number;
     let prevTime = 0;
@@ -363,29 +370,28 @@ export default function ArcScene() {
       starMat.opacity = 0.9 * (1 - scrollProgress);
       if (canvas) canvas.style.opacity = String(1 - Math.max(0, (scrollProgress - 0.7) / 0.3));
       renderer.render(scene, camera);
-    }
-    animate();
 
-    // Cursor glow
-    const glow = glowRef.current;
-    let glowTargetX = 0, glowTargetY = 0, glowCurrentX = 0, glowCurrentY = 0, lastTime = performance.now();
-    const lagMs = 150;
-
-    const onMouseGlow = (e: MouseEvent) => { glowTargetX = e.clientX; glowTargetY = e.clientY; };
-    document.addEventListener("mousemove", onMouseGlow);
-
-    let glowAnimId: number;
-    function updateGlow() {
-      glowAnimId = requestAnimationFrame(updateGlow);
+      // Cursor glow (merged — eliminates second RAF loop)
       const now = performance.now();
-      const dt = now - lastTime;
-      lastTime = now;
-      const factor = dt / (lagMs + dt);
+      const glowDt = now - lastGlowTime;
+      lastGlowTime = now;
+      const factor = glowDt / (lagMs + glowDt);
       glowCurrentX += (glowTargetX - glowCurrentX) * factor;
       glowCurrentY += (glowTargetY - glowCurrentY) * factor;
       if (glow) { glow.style.left = glowCurrentX + "px"; glow.style.top = glowCurrentY + "px"; }
     }
-    updateGlow();
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animId);
+      } else {
+        prevTime = timer.getElapsed();
+        lastGlowTime = performance.now();
+        animate();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    animate();
 
     // Scroll animations
     const nav = document.querySelector(".main-nav");
@@ -441,7 +447,7 @@ export default function ArcScene() {
 
     return () => {
       cancelAnimationFrame(animId);
-      cancelAnimationFrame(glowAnimId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mousemove", onMouseGlow);
       window.removeEventListener("resize", onResize);

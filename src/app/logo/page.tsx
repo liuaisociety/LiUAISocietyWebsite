@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 import { ArcSceneClient } from "@/components/home/ArcSceneClient";
 
 export default function LogoPage() {

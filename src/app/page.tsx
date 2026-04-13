@@ -49,7 +49,7 @@ export default async function HomePage() {
 
       <div className="content">
         <section className="hero-section">
-          {/* <h1 className="hero-title">AI Society<sup>(LiU)</sup></h1> */}
+          <h1 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>LiU AI Society — AI Student Association at Linköping University</h1>
           <Image
             src="/images/AI%20Society%20LiU.svg"
             className="hero-wordmark"
@@ -105,7 +105,14 @@ export default async function HomePage() {
           <div className="marquee">
             <div className="marquee-track">
               {allMarqueeImages.map((e, i) => (
-                <div key={i} className="event-card" style={{ backgroundImage: `url('/images/events/${e.img}')` }}>
+                <div key={i} className="event-card">
+                  <Image
+                    src={`/images/events/${e.img}`}
+                    alt={e.title}
+                    fill
+                    sizes="(max-width: 600px) 200px, (min-width: 1300px) 420px, 350px"
+                    style={{ objectFit: "cover" }}
+                  />
                   <span className="event-card-title">{e.title}</span>
                 </div>
               ))}
@@ -114,7 +121,14 @@ export default async function HomePage() {
           <div className="marquee marquee--mobile-only">
             <div className="marquee-track marquee-track--reverse">
               {allMarqueeImages.map((e, i) => (
-                <div key={i} className="event-card" style={{ backgroundImage: `url('/images/events/${e.img}')` }}>
+                <div key={i} className="event-card">
+                  <Image
+                    src={`/images/events/${e.img}`}
+                    alt={e.title}
+                    fill
+                    sizes="(max-width: 600px) 200px, (min-width: 1300px) 420px, 350px"
+                    style={{ objectFit: "cover" }}
+                  />
                   <span className="event-card-title">{e.title}</span>
                 </div>
               ))}
