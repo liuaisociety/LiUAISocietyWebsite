@@ -555,6 +555,8 @@ body.light .mobile-link { color: #111111; }
 @media (max-width: 560px) {
   .home-events-section { padding: 80px 24px 100px; }
   .home-events-grid { grid-template-columns: 1fr; }
+  .home-events-grid > *:nth-child(n+4) { display: none; }
+  .home-events-group + .home-events-group { display: none; }
 }
 
 /* Marquee */
