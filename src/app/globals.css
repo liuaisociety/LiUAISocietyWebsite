@@ -1292,6 +1292,7 @@ body.light .footer-socials a:hover { color: #000000; }
   .event-card { width: 200px; height: 140px; }
   .marquee-track { gap: 12px; }
   .marquee--mobile-only { display: block; margin-top: 12px; }
+  .marquee-section::before, .marquee-section::after { width: 60px; }
   .events-section { padding: 80px 0; }
   .career-grid { grid-template-columns: 1fr; }
   .members-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; }
