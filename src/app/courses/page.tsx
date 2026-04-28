@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
+
+export const metadata: Metadata = {
+  title: "AI Courses at LiU | LiU AI Society",
+  description:
+    "Discover AI, machine learning, NLP, computer vision, and robotics courses at Linköping University — curated by LiU AI Society to help you build your expertise.",
+  openGraph: {
+    title: "AI Courses at LiU | LiU AI Society",
+    description:
+      "Discover AI, machine learning, NLP, computer vision, and robotics courses at Linköping University — curated by LiU AI Society to help you build your expertise.",
+    url: "https://liuais.se/courses",
+  },
+};
 
 const generalCourses = [
   { code: "TDDE01", name: "Machine Learning",                                        area: "General",         semester: "Autumn", period: "2", block: "1", credits: "6",  level: "A1X", ec: "V" },
@@ -68,7 +81,7 @@ export default function CoursesPage() {
       <Nav />
       <div className="courses-content">
         <section className="courses-intro">
-          <h2 className="section-heading">Courses</h2>
+          <h1 className="page-heading">Courses</h1>
           <p className="courses-description">Discover AI and machine learning courses offered at Linköping University to build your expertise.</p>
         </section>
 

@@ -80,7 +80,7 @@ export function Nav({ light = false }: { light?: boolean }) {
       <nav ref={navRef} className={navClass}>
         <div className="nav-logo">
           <Link href="/" className="nav-brand" aria-label="LiU AI Society home">
-            <Image src="/images/LiUAISlogo.svg" className="nav-logo-image" alt="LiU AI Society" width={220} height={168} priority />
+            <Image src="/images/LiUAISlogo.svg" className="nav-logo-image" alt="" width={220} height={168} priority />
             <Image src="/images/AI%20Society%20LiU.svg" className="nav-logo-image" alt="LiU AI Society" width={656} height={188} priority />
           </Link>
         </div>
@@ -88,6 +88,7 @@ export function Nav({ light = false }: { light?: boolean }) {
           <Link href="/" className="nav-link">Home</Link>
           <Link href="/about" className="nav-link">About</Link>
           <Link href="/events" className="nav-link">Events</Link>
+          <Link href="/projects" className="nav-link">Projects</Link>
           <Link href="/courses" className="nav-link">Courses</Link>
           <Link href="/career" className="nav-link">Career</Link>
         </div>
@@ -101,12 +102,13 @@ export function Nav({ light = false }: { light?: boolean }) {
       <div ref={overlayRef} className="mobile-overlay" />
       <div ref={panelRef} className="mobile-panel">
         <Link href="/" className="mobile-logo nav-brand" aria-label="LiU AI Society home">
-          <Image src="/images/LiUAISlogo.svg" className="nav-logo-image" alt="LiU AI Society" width={220} height={168} />
+          <Image src="/images/LiUAISlogo.svg" className="nav-logo-image" alt="" width={220} height={168} />
           <Image src="/images/AI%20Society%20LiU.svg" alt="LiU AI Society" width={656} height={188} />
         </Link>
         <Link href="/" className="mobile-link">Home</Link>
         <Link href="/about" className="mobile-link">About</Link>
         <Link href="/events" className="mobile-link">Events</Link>
+        <Link href="/projects" className="mobile-link">Projects</Link>
         <Link href="/courses" className="mobile-link">Courses</Link>
         <Link href="/career" className="mobile-link">Career</Link>
       </div>
