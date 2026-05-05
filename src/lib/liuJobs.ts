@@ -56,7 +56,7 @@ export async function fetchLiUJobs(): Promise<LiUJob[]> {
       jobs.push({ title, href, deadline, department: org, tag: deriveTag(title, occupationArea) });
     }
 
-    return jobs;
+    return jobs.filter((j) => j.tag !== "Professor");
   } catch {
     return [];
   }
