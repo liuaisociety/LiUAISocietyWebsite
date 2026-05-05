@@ -8,6 +8,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { eventBySlugQuery, allEventSlugsQuery } from "@/lib/queries";
 import type { Event } from "@/types/event";
 import type { Metadata } from "next";
+import { ClientDate } from "@/components/ClientDate";
 
 export const revalidate = 60;
 
@@ -48,15 +49,6 @@ export async function generateStaticParams() {
   }
 }
 
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("sv-SE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -122,7 +114,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             )}
             <h1 className="event-page-title">{event.title}</h1>
             <div className="event-page-meta">
-              <span><Calendar size={15} /> {formatDate(event.date)}</span>
+              <span><Calendar size={15} /> <ClientDate date={event.date} month="long" /></span>
               {event.location && <span><MapPin size={15} /> {event.location}</span>}
             </div>
             {event.lumaUrl && (
