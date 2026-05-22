@@ -12,3 +12,17 @@ export const eventsQuery = groq`
     tags,
   }
 `;
+
+export const jobPostingsQuery = groq`
+  *[_type == "jobPosting" && (deadline == null || deadline >= $today)] | order(deadline asc) {
+    _id,
+    title,
+    company,
+    location,
+    deadline,
+    description,
+    url,
+    tag,
+    "color": color.hex,
+  }
+`;

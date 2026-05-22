@@ -1,11 +1,29 @@
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { fetchLiUJobs } from "@/lib/liuJobs";
+import { client } from "@/lib/sanity";
+import { jobPostingsQuery } from "@/lib/queries";
 
 export const revalidate = 3600;
 
+interface JobPosting {
+  _id: string;
+  title: string;
+  company: string;
+  location?: string;
+  deadline?: string;
+  description?: string;
+  url: string;
+  tag?: string;
+  color?: string;
+}
+
 export default async function CareerPage() {
-  const liuJobs = await fetchLiUJobs();
+  const today = new Date().toISOString().split("T")[0];
+  const [liuJobs, manualJobs] = await Promise.all([
+    fetchLiUJobs(),
+    client.fetch<JobPosting[]>(jobPostingsQuery, { today }),
+  ]);
 
   return (
     <>
@@ -18,10 +36,29 @@ export default async function CareerPage() {
         </section>
 
         <section className="career-section">
-          <h3 className="career-section-title">Open Positions at LiU</h3>
-          {liuJobs.length > 0 ? (
+          <h3 className="career-section-title">Open Positions</h3>
+          {manualJobs.length > 0 || liuJobs.length > 0 ? (
             <>
               <div className="career-grid">
+                {manualJobs.map((job) => (
+                  <a
+                    key={job._id}
+                    href={job.url}
+                    target="_blank"
+                    rel="noopener"
+                    className="career-card"
+                    style={job.color ? { borderLeftColor: job.color } : undefined}
+                  >
+                    {job.tag && <span className="career-tag">{job.tag}</span>}
+                    <h4 className="career-card-title">{job.title}</h4>
+                    <p className="career-card-meta">
+                      {job.company}
+                      {job.location ? ` · ${job.location}` : ""}
+                    </p>
+                    {job.description && <p className="career-card-desc">{job.description}</p>}
+                    {job.deadline && <p className="career-card-deadline">Deadline: {job.deadline}</p>}
+                  </a>
+                ))}
                 {liuJobs.map((p) => (
                   <a key={p.href} href={p.href} target="_blank" rel="noopener" className="career-card">
                     <span className="career-tag">{p.tag}</span>
@@ -43,18 +80,6 @@ export default async function CareerPage() {
           ) : (
             <p className="career-description">No open positions found right now — check back soon.</p>
           )}
-        </section>
-
-        <section className="career-section">
-          <h3 className="career-section-title">Thesis Opportunities</h3>
-          <div className="career-grid">
-            <div className="career-card">
-              <span className="career-tag thesis">Thesis</span>
-              <h4 className="career-card-title">Example: Reinforcement Learning for Autonomous Navigation</h4>
-              <p className="career-card-meta">Supervisor: Prof. Example &middot; IDA, LiU</p>
-              <p className="career-card-desc">Investigating novel RL approaches for real-time path planning in dynamic environments. Suitable for M.Sc. students in CS or AI.</p>
-            </div>
-          </div>
         </section>
       </div>
       <Footer />

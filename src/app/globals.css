@@ -1265,7 +1265,7 @@ body.light .footer-socials a:hover { color: #000000; }
 .career-card-title { font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 8px; line-height: 1.4; }
 .career-card-meta { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
 .career-card-deadline { font-size: 12px; color: rgba(255,255,255,0.3); font-family: ui-monospace, monospace; }
-.career-card-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; margin-top: 8px; }
+.career-card-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .career-view-all { display: inline-block; font-size: 14px; color: #ffffff; text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 2px; }
 
 /* Courses */
