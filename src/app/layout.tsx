@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LiU AI Society",
-  description: "A student association at Linköping University devoted to artificial intelligence.",
+  title: "LiU AI Society | AI Student Association at LiU",
+  description: "LiU AI Society is Linköping University's student association for AI. We host hackathons, company visits, and lectures — connecting students with industry and research.",
   metadataBase: new URL("https://liuais.se"),
   openGraph: {
-    title: "LiU AI Society",
-    description: "A student association at Linköping University devoted to artificial intelligence.",
+    title: "LiU AI Society | AI Student Association at LiU",
+    description: "LiU AI Society is Linköping University's student association for AI. We host hackathons, company visits, and lectures — connecting students with industry and research.",
     url: "https://liuais.se",
     siteName: "LiU AI Society",
     images: [
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LiU AI Society",
-    description: "A student association at Linköping University devoted to artificial intelligence.",
+    title: "LiU AI Society | AI Student Association at LiU",
+    description: "LiU AI Society is Linköping University's student association for AI. We host hackathons, company visits, and lectures — connecting students with industry and research.",
     images: ["/images/LiUAIS.png"],
   },
 };
@@ -55,6 +55,11 @@ const jsonLd = {
     "https://www.linkedin.com/company/liu-ai-society/",
     "https://www.instagram.com/liuaisociety/",
   ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "contact@liuais.com",
+    contactType: "general inquiry",
+  },
 };
 
 export default function RootLayout({

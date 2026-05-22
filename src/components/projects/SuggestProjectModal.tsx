@@ -9,14 +9,18 @@ interface Props {
   onClose: () => void;
 }
 
-const EVENT_TYPES = ["Lecture", "Workshop", "Company visit", "Hackathon", "Social", "Other"];
+const TECH_OPTIONS = [
+  "Python", "TypeScript", "JavaScript", "Rust", "Go", "C++",
+  "PyTorch", "TensorFlow", "Next.js", "React", "FastAPI", "Other",
+];
 
-export function SuggestEventModal({ onClose }: Props) {
+export function SuggestProjectModal({ onClose }: Props) {
   const [fields, setFields] = useState({
     name: "",
     email: "",
-    eventTitle: "",
-    eventType: "",
+    projectTitle: "",
+    githubUrl: "",
+    techStack: "",
     description: "",
   });
   const [status, setStatus] = useState<Status>("idle");
@@ -44,7 +48,7 @@ export function SuggestEventModal({ onClose }: Props) {
     e.preventDefault();
     setStatus("loading");
     try {
-      const res = await fetch("/api/suggest-event", {
+      const res = await fetch("/api/suggest-project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fields),
@@ -67,16 +71,16 @@ export function SuggestEventModal({ onClose }: Props) {
 
         <div className="modal-header">
           <p className="modal-eyebrow">LiU AI Society</p>
-          <h2 className="modal-title" id="modal-title">Suggest an event</h2>
-          <p className="modal-subtitle">Got an idea? We&apos;d love to hear it.</p>
+          <h2 className="modal-title" id="modal-title">Submit your project</h2>
+          <p className="modal-subtitle">Built something cool? We&apos;d love to feature it.</p>
         </div>
 
         <hr className="modal-divider" />
 
         {status === "success" ? (
           <div className="modal-success">
-            <p className="newsletter-success">Thanks for the idea.</p>
-            <p className="newsletter-success-sub">We&apos;ll review your suggestion and get back to you.</p>
+            <p className="newsletter-success">Submission received.</p>
+            <p className="newsletter-success-sub">We&apos;ll review your project and reach out if we feature it.</p>
             <button className="suggest-event-btn" style={{ marginTop: "1.5rem" }} onClick={onClose}>Close</button>
           </div>
         ) : (
@@ -91,19 +95,23 @@ export function SuggestEventModal({ onClose }: Props) {
                 <input className="newsletter-input" type="email" required placeholder="alan@student.liu.se" value={fields.email} onChange={set("email")} disabled={status === "loading"} />
               </div>
               <div className="modal-field modal-field--full">
-                <label className="modal-label">Event title <span className="modal-required">*</span></label>
-                <input className="newsletter-input" type="text" required placeholder="e.g. Intro to Reinforcement Learning" value={fields.eventTitle} onChange={set("eventTitle")} disabled={status === "loading"} />
+                <label className="modal-label">Project name <span className="modal-required">*</span></label>
+                <input className="newsletter-input" type="text" required placeholder="e.g. LiU RAG Assistant" value={fields.projectTitle} onChange={set("projectTitle")} disabled={status === "loading"} />
               </div>
               <div className="modal-field modal-field--full">
-                <label className="modal-label">Event type</label>
-                <select className="newsletter-input modal-select" value={fields.eventType} onChange={set("eventType")} disabled={status === "loading"}>
-                  <option value="">Select type…</option>
-                  {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                <label className="modal-label">GitHub URL <span className="modal-required">*</span></label>
+                <input className="newsletter-input" type="url" required placeholder="https://github.com/alan-turing/project" value={fields.githubUrl} onChange={set("githubUrl")} disabled={status === "loading"} />
+              </div>
+              <div className="modal-field modal-field--full">
+                <label className="modal-label">Tech stack</label>
+                <select className="newsletter-input modal-select" value={fields.techStack} onChange={set("techStack")} disabled={status === "loading"}>
+                  <option value="">Select primary technology…</option>
+                  {TECH_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div className="modal-field modal-field--full">
                 <label className="modal-label">Description <span className="modal-required">*</span></label>
-                <textarea className="newsletter-input modal-textarea" required placeholder="What would happen at this event? Any speaker ideas, format, or target audience?" value={fields.description} onChange={set("description")} disabled={status === "loading"} rows={4} />
+                <textarea className="newsletter-input modal-textarea" required placeholder="What does your project do? What problem does it solve?" value={fields.description} onChange={set("description")} disabled={status === "loading"} rows={4} />
               </div>
             </div>
 
@@ -112,7 +120,7 @@ export function SuggestEventModal({ onClose }: Props) {
             )}
 
             <button type="submit" className="newsletter-btn" disabled={status === "loading"}>
-              {status === "loading" ? "Sending…" : "Send suggestion →"}
+              {status === "loading" ? "Sending…" : "Submit project →"}
             </button>
           </form>
         )}

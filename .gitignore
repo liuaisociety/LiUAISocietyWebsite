@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code
+.agents/
+skills-lock.json
+.claude/settings.local.json
+.claude/
+.windsurf/

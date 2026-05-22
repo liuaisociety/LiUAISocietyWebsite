@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
+
+export const metadata: Metadata = {
+  title: "About | LiU AI Society",
+  description:
+    "Meet the board and founders of LiU AI Society — Linköping University's student association for AI. Learn who leads the organisation and how to get in touch.",
+  openGraph: {
+    title: "About | LiU AI Society",
+    description:
+      "Meet the board and founders of LiU AI Society — Linköping University's student association for AI. Learn who leads the organisation and how to get in touch.",
+    url: "https://liuais.se/about",
+  },
+};
 
 const boardMembers = [
   { name: "Nils Alenäs",             role: "President",              img: "NilsAlenas-BRO-wBIP.jpeg",            linkedin: "https://www.linkedin.com/in/nils-alen%C3%A4s-7a3214324",          email: "nils@liuais.com" },
@@ -31,7 +45,15 @@ type Member = { name: string; role: string; img: string; linkedin: string; email
 function MemberCard({ member }: { member: Member }) {
   return (
     <div className="member-card">
-      <div className="member-img" style={{ backgroundImage: `url('/images/board-members/${member.img}')`, backgroundPosition: member.posX ?? "center" }} />
+      <div className="member-img">
+        <Image
+          src={`/images/board-members/${member.img}`}
+          alt={member.name}
+          fill
+          sizes="(max-width: 600px) 50vw, 160px"
+          style={{ objectFit: "cover", objectPosition: member.posX ?? "center" }}
+        />
+      </div>
       <h3 className="member-name">{member.name}</h3>
       <p className="member-role">{member.role}</p>
       <div className="member-icons">
@@ -54,7 +76,7 @@ export default function AboutPage() {
       <Nav />
       <div className="about-content about-page">
         <section className="about-intro">
-          <h2 className="section-heading">The Board</h2>
+          <h1 className="page-heading">The Board</h1>
           <p className="about-description">Meet the dedicated team driving LiU AI Society&apos;s mission to connect students with the world of artificial intelligence.</p>
         </section>
 
