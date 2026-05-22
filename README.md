@@ -27,8 +27,9 @@ The official website for [LiU AI Society](https://liuais.com), the student assoc
 | `/` | Home — animated sigmoid arc hero, events, vision, partner section, newsletter signup |
 | `/about` | Board members and founders |
 | `/events` | Upcoming and past events with suggest-event modal |
+| `/projects` | AI & ML projects with tech stack filtering and community submission |
 | `/courses` | AI & ML courses at LiU |
-| `/career` | Job listings scraped from LiU + thesis opportunities |
+| `/career` | Job listings — manual postings via CMS + auto-fetched from LiU RSS |
 | `/logo` | Isolated logo view (arc + wordmark) |
 | `/studio` | Sanity Studio (CMS) |
 
@@ -54,7 +55,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 KIT_API_KEY=your_kit_api_key
 KIT_FORM_ID=your_kit_form_id
 
-# Resend — transactional email (event suggestions, partner enquiries)
+# Resend — transactional email (event suggestions, partner enquiries, project submissions)
 RESEND_API_KEY=your_resend_api_key
 ```
 
@@ -69,22 +70,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## CMS — Sanity
 
-Content (events) is managed through Sanity Studio at `/studio`. To set up:
+Content is managed through Sanity Studio at `/studio`. To set up:
 
 1. Create a project at [sanity.io](https://sanity.io)
 2. Add your project ID and dataset to `.env.local`
 3. Deploy the studio or use it locally at `/studio`
 
-Event fields: title, date, location, image, tags, Luma URL.
+### Document types
+
+**Event** — title, date, location, image, tags, Luma URL, gallery, leaderboard, speaker, testimonials, and more.
+
+**Project** — title, description, cover image, GitHub URL, tech stack tags, contributors (with GitHub usernames for avatars), and status (active / completed / archived).
+
+**Job Posting** — title, company, location, deadline, description, apply URL, tag (Full-time / Internship / Thesis / PhD / etc.), and accent color. Postings are automatically hidden after their deadline passes.
 
 ---
 
 ## Email setup
 
-Two contact forms send email via [Resend](https://resend.com):
+Contact forms send email via [Resend](https://resend.com):
 
 - **Suggest an event** (`/api/suggest-event`) — from the Events page
 - **Partner enquiry** (`/api/partner`) — from the home page partner section
+- **Submit a project** (`/api/suggest-project`) — from the Projects page
 
 ---
 
