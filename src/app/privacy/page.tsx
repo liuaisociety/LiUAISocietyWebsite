@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <div className="about-content about-page">
         <section className="about-intro">
           <h1 className="page-heading">Privacy Policy</h1>
-          <p className="about-description">Last updated: April 2026</p>
+          <p className="about-description">Last updated: September 2026</p>
         </section>
 
         <section className="about-section">
@@ -63,6 +63,21 @@ export default function PrivacyPage() {
           <p className="about-description">
             We use Vercel Analytics to collect anonymous usage statistics. No personally
             identifiable data is collected or stored by our analytics.
+          </p>
+        </section>
+
+        <section className="about-section">
+          <h2 className="section-heading">Cookies and local storage</h2>
+          <p className="about-description">
+            We do not set any tracking or marketing cookies. The only thing we store in your
+            browser is your answer to the cookie banner, saved in local storage under the
+            name <code>liuais-cookie-consent</code>, so we do not have to ask again on every visit.
+            It stays on your device and is never sent to us.
+          </p>
+          <p className="about-description" style={{ marginTop: "0.75rem" }}>
+            Analytics are optional and load only after you choose Accept. If you decline,
+            no analytics scripts are loaded. You can change your choice at any time through
+            the &ldquo;Cookie settings&rdquo; link at the bottom of every page.
           </p>
         </section>
 

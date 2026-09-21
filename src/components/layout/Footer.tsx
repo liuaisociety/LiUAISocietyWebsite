@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CookieSettingsLink } from "@/components/layout/CookieSettingsLink";
 
 export function Footer() {
   return (
@@ -25,6 +26,8 @@ export function Footer() {
       <p className="footer-copy">
         &copy; 2026 LiU AI Society. All rights reserved.{" "}
         <Link href="/privacy" className="footer-privacy-link">Privacy Policy</Link>
+        {" · "}
+        <CookieSettingsLink />
       </p>
     </footer>
   );
