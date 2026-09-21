@@ -10,6 +10,24 @@ const STORAGE_KEY = "liuais-cookie-consent";
 
 export const OPEN_COOKIE_SETTINGS_EVENT = "liuais:open-cookie-settings";
 
+function readConsent(): Consent {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY);
+    return value === "accepted" || value === "declined" ? value : null;
+  } catch {
+    // Storage is blocked (e.g. all cookies disabled): treat it as no choice made.
+    return null;
+  }
+}
+
+function writeConsent(value: "accepted" | "declined") {
+  try {
+    localStorage.setItem(STORAGE_KEY, value);
+  } catch {
+    // Storage is blocked: the choice still holds in state for this visit.
+  }
+}
+
 export function CookieConsent() {
   const [consent, setConsent] = useState<Consent>(null);
   const [mounted, setMounted] = useState(false);
@@ -17,7 +35,7 @@ export function CookieConsent() {
 
   useEffect(() => {
     setMounted(true);
-    setConsent(localStorage.getItem(STORAGE_KEY) as Consent);
+    setConsent(readConsent());
   }, []);
 
   useEffect(() => {
@@ -34,13 +52,13 @@ export function CookieConsent() {
   }, []);
 
   function accept() {
-    localStorage.setItem(STORAGE_KEY, "accepted");
+    writeConsent("accepted");
     setConsent("accepted");
     setReopened(false);
   }
 
   function decline() {
-    localStorage.setItem(STORAGE_KEY, "declined");
+    writeConsent("declined");
     // Analytics scripts already loaded in this tab only go away with a full reload.
     if (consent === "accepted") {
       window.location.reload();
