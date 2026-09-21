@@ -8,23 +8,46 @@ type Consent = "accepted" | "declined" | null;
 
 const STORAGE_KEY = "liuais-cookie-consent";
 
+export const OPEN_COOKIE_SETTINGS_EVENT = "liuais:open-cookie-settings";
+
 export function CookieConsent() {
   const [consent, setConsent] = useState<Consent>(null);
   const [mounted, setMounted] = useState(false);
+  const [reopened, setReopened] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setConsent(localStorage.getItem(STORAGE_KEY) as Consent);
   }, []);
 
+  useEffect(() => {
+    const open = () => setReopened(true);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setReopened(false);
+    };
+    window.addEventListener(OPEN_COOKIE_SETTINGS_EVENT, open);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, open);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
   function accept() {
     localStorage.setItem(STORAGE_KEY, "accepted");
     setConsent("accepted");
+    setReopened(false);
   }
 
   function decline() {
     localStorage.setItem(STORAGE_KEY, "declined");
+    // Analytics scripts already loaded in this tab only go away with a full reload.
+    if (consent === "accepted") {
+      window.location.reload();
+      return;
+    }
     setConsent("declined");
+    setReopened(false);
   }
 
   if (!mounted) return null;
@@ -33,7 +56,7 @@ export function CookieConsent() {
     <>
       {consent === "accepted" && <Analytics />}
       {consent === "accepted" && <SpeedInsights />}
-      {consent === null && (
+      {(consent === null || reopened) && (
         <div
           role="dialog"
           aria-label="Cookie consent"
@@ -78,6 +101,11 @@ export function CookieConsent() {
             >
               Privacy policy
             </a>
+            {consent !== null && (
+              <span style={{ display: "block", marginTop: 4 }}>
+                Current choice: {consent}.
+              </span>
+            )}
           </p>
           <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
             <button
