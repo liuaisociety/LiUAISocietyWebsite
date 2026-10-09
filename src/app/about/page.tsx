@@ -16,13 +16,13 @@ export const metadata: Metadata = {
 };
 
 const boardMembers = [
-  { name: "Daniel Walker Tunek",     role: "President",              img: "DanielWalkerTunek-CyZne9Jw.jpeg",     linkedin: "https://www.linkedin.com/in/daniel-walker-tunek-b75474330/",        email: "daniel@liuais.com" },
-  { name: "Simon Harrysson",         role: "Treasurer & Business",   img: "SimonHarrysson-BQdNKskJ.jpeg",        linkedin: "https://www.linkedin.com/in/simonharrysson",                        email: "simon@liuais.com" },
-  { name: "Emil Bergqvist",          role: "Education",              img: "EmilBergqvist-CcZ_4YTj.jpeg",         linkedin: "https://www.linkedin.com/in/emil-bergqvist-6b6b61195/",             email: "emil@liuais.com" },
-  { name: "Emma Bertmar",            role: "Development",            img: "emma.png",                             linkedin: "https://www.linkedin.com/in/emma-bertmar-b43006339/",               email: "emma@liuais.com" },
-  { name: "Martin Hallbäck",        role: "Communication",          img: "martin.png",                           linkedin: "https://www.linkedin.com/in/martin-hallback/",                      email: "martin.h@liuais.com" },
-  { name: "Joel Hultman",            role: "Communication",          img: "joel.png",                             linkedin: "https://www.linkedin.com/in/joel-hultman/",                         email: "joel@liuais.com" },
-  { name: "Johan Hultgren",          role: "Business",               img: "johan.png",                            linkedin: "https://www.linkedin.com/in/johan-hultgren-3991a2265/",             email: "johan@liuais.com" },
+  { name: "Daniel Walker Tunek",     role: "President",              img: "DanielWalkerTunek-CyZne9Jw.jpeg",     linkedin: "https://www.linkedin.com/in/daniel-walker-tunek-b75474330/" },
+  { name: "Simon Harrysson",         role: "Treasurer & Business",   img: "SimonHarrysson-BQdNKskJ.jpeg",        linkedin: "https://www.linkedin.com/in/simonharrysson" },
+  { name: "Emil Bergqvist",          role: "Education",              img: "EmilBergqvist-CcZ_4YTj.jpeg",         linkedin: "https://www.linkedin.com/in/emil-bergqvist-6b6b61195/" },
+  { name: "Emma Bertmar",            role: "Development",            img: "emma.png",                             linkedin: "https://www.linkedin.com/in/emma-bertmar-b43006339/" },
+  { name: "Martin Hallbäck",        role: "Communication",          img: "martin.png",                           linkedin: "https://www.linkedin.com/in/martin-hallback/" },
+  { name: "Joel Hultman",            role: "Communication",          img: "joel.png",                             linkedin: "https://www.linkedin.com/in/joel-hultman/" },
+  { name: "Johan Hultgren",          role: "Business",               img: "johan.png",                            linkedin: "https://www.linkedin.com/in/johan-hultgren-3991a2265/" },
 ];
 
 const founders = [
@@ -32,7 +32,7 @@ const founders = [
   { name: "Axel Wiksäter",   role: "Co-Founder", img: "founders/AxelWiksäter-BTuHUF4k.jpeg",    linkedin: "https://www.linkedin.com/in/axel-wiks%C3%A4ter-536785218/" },
 ];
 
-type Member = { name: string; role: string; img: string; linkedin: string; email?: string; posX?: string };
+type Member = { name: string; role: string; img: string; linkedin: string; posX?: string };
 
 function MemberCard({ member }: { member: Member }) {
   return (
@@ -52,11 +52,6 @@ function MemberCard({ member }: { member: Member }) {
         <a href={member.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" className="member-icon-link">
           <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        {member.email && (
-          <a href={`mailto:${member.email}`} aria-label="Email" className="member-icon-link">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
-          </a>
-        )}
       </div>
     </div>
   );
