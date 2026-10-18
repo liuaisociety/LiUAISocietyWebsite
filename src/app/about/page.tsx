@@ -32,7 +32,19 @@ const founders = [
   { name: "Axel Wiksäter",   role: "Co-Founder", img: "founders/AxelWiksäter-BTuHUF4k.jpeg",    linkedin: "https://www.linkedin.com/in/axel-wiks%C3%A4ter-536785218/" },
 ];
 
+const PLACEHOLDER_COUNT = 18;
+
 type Member = { name: string; role: string; img: string; linkedin: string; posX?: string };
+
+function PlaceholderCard() {
+  return (
+    <div className="member-card">
+      <div className="member-img member-img-placeholder" />
+      <h3 className="member-name">To be announced</h3>
+      <p className="member-role">New member</p>
+    </div>
+  );
+}
 
 function MemberCard({ member }: { member: Member }) {
   return (
@@ -70,6 +82,7 @@ export default function AboutPage() {
         <section className="about-section">
           <div className="members-grid">
             {boardMembers.map(m => <MemberCard key={m.name} member={m} />)}
+            {Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => <PlaceholderCard key={`tba-${i}`} />)}
           </div>
         </section>
 

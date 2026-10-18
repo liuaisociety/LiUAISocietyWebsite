@@ -45,7 +45,15 @@ const BENEFITS = [
   },
 ];
 
-export function PartnerSection() {
+type PartnerSectionProps = {
+  eyebrow?: string;
+  heading?: React.ReactNode;
+};
+
+export function PartnerSection({
+  eyebrow = "For companies & organisations",
+  heading = <>Shape the future<br />of AI talent</>,
+}: PartnerSectionProps) {
   const [fields, setFields] = useState({ name: "", company: "", email: "", interest: "", message: "" });
   const [status, setStatus] = useState<Status>("idle");
 
@@ -75,8 +83,8 @@ export function PartnerSection() {
 
         {/* Left — pitch */}
         <div className="partner-pitch">
-          <p className="partner-eyebrow">For companies &amp; organisations</p>
-          <h2 className="partner-heading">Shape the future<br />of AI talent</h2>
+          <p className="partner-eyebrow">{eyebrow}</p>
+          <h2 className="partner-heading">{heading}</h2>
           <p className="partner-sub">
             LiU AI Society connects ambitious students with industry and academia.
             Partner with us to build your brand on campus, access exceptional talent,
