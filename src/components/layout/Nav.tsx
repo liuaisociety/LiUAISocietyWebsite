@@ -85,12 +85,12 @@ export function Nav({ light = false }: { light?: boolean }) {
           </Link>
         </div>
         <div className="nav-links">
-          <Link href="/" className="nav-link">Home</Link>
-          <Link href="/about" className="nav-link">About</Link>
           <Link href="/events" className="nav-link">Events</Link>
           <Link href="/projects" className="nav-link">Projects</Link>
+          <Link href="/for-companies" className="nav-link">For Companies</Link>
           <Link href="/courses" className="nav-link">Courses</Link>
           <Link href="/career" className="nav-link">Career</Link>
+          <Link href="/about" className="nav-link">About</Link>
         </div>
       </nav>
 
@@ -105,12 +105,12 @@ export function Nav({ light = false }: { light?: boolean }) {
           <Image src="/images/LiUAISlogo.svg" className="nav-logo-image" alt="" width={220} height={168} />
           <Image src="/images/AI%20Society%20LiU.svg" alt="LiU AI Society" width={656} height={188} />
         </Link>
-        <Link href="/" className="mobile-link">Home</Link>
-        <Link href="/about" className="mobile-link">About</Link>
         <Link href="/events" className="mobile-link">Events</Link>
         <Link href="/projects" className="mobile-link">Projects</Link>
+        <Link href="/for-companies" className="mobile-link">For Companies</Link>
         <Link href="/courses" className="mobile-link">Courses</Link>
         <Link href="/career" className="mobile-link">Career</Link>
+        <Link href="/about" className="mobile-link">About</Link>
       </div>
     </>
   );
