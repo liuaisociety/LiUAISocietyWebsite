@@ -48,8 +48,7 @@ const WORKSHOP_TASKS = [
 
 const PROJECTS_IN_THE_WORKS = [
   { title: "AI-enabling internal processes", description: "Building agentic workflows, boosting an organization's efficiency." },
-  { title: "Startup pilot and demo", description: "" },
-  { title: "Stealth startup pilot and demo", description: "" },
+  { title: "Startup pilot and demo", description: "Development of MVP in progress." },
   { title: "Claude Workshop", description: "Learn hidden insights, unlock productivity, and master AI." },
 ];
 
@@ -89,18 +88,18 @@ export default function ForCompaniesPage() {
 
         <section className="service-segment">
           <div className="service-text">
-            <h2 className="service-title">AI Workshop</h2>
+            <h2 className="service-title">Event Sponsorship</h2>
             <p className="service-desc">
-              Get insight into how the latest developments in AI are shaping the same tools you use in your daily workflows. We provide both the insights and the tools you need to set up AI so that it works with you. After an assessment of your current AI capabilities, we show what works today, what doesn&apos;t, and leave you with workflows you can use the next morning. All tailored to what you need right now.
+              Host an event with us and reach the students who are already building with AI. Fund a workshop, a hackathon or a lecture, put your brand in front of the room, and showcase your product to the people who will actually use it in the industry.
             </p>
           </div>
           <div className="service-panel">
-            <p className="service-panel-label">Workshop tasks &amp; skills</p>
+            <p className="service-panel-label">Reach the talent in AI</p>
             <ul className="service-list">
-              {WORKSHOP_TASKS.map((t) => (
-                <li key={t.title} className="service-list-item">
-                  <p className="service-item-title">{t.title}</p>
-                  <p className="service-item-desc">{t.description}</p>
+              {SPONSORSHIP_BENEFITS.map((b) => (
+                <li key={b.title} className="service-list-item">
+                  <p className="service-item-title">{b.title}</p>
+                  <p className="service-item-desc">{b.description}</p>
                 </li>
               ))}
             </ul>
@@ -129,18 +128,18 @@ export default function ForCompaniesPage() {
 
         <section className="service-segment">
           <div className="service-text">
-            <h2 className="service-title">Event Sponsorship</h2>
+            <h2 className="service-title">AI Workshop</h2>
             <p className="service-desc">
-              Host an event with us and reach the students who are already building with AI. Fund a workshop, a hackathon or a lecture, put your brand in front of the room, and showcase your product to the people who will actually use it in the industry.
+              Get insight into how the latest developments in AI are shaping the same tools you use in your daily workflows. We provide both the insights and the tools you need to set up AI so that it works with you. After an assessment of your current AI capabilities, we show what works today, what doesn&apos;t, and leave you with workflows you can use the next morning. All tailored to what you need right now.
             </p>
           </div>
           <div className="service-panel">
-            <p className="service-panel-label">Reach the talent in AI</p>
+            <p className="service-panel-label">Workshop tasks &amp; skills</p>
             <ul className="service-list">
-              {SPONSORSHIP_BENEFITS.map((b) => (
-                <li key={b.title} className="service-list-item">
-                  <p className="service-item-title">{b.title}</p>
-                  <p className="service-item-desc">{b.description}</p>
+              {WORKSHOP_TASKS.map((t) => (
+                <li key={t.title} className="service-list-item">
+                  <p className="service-item-title">{t.title}</p>
+                  <p className="service-item-desc">{t.description}</p>
                 </li>
               ))}
             </ul>
