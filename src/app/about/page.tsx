@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
@@ -15,33 +16,57 @@ export const metadata: Metadata = {
   },
 };
 
-const boardMembers = [
+type Member = { name: string; role: string; img: string; linkedin: string; posX?: string };
+// A slot in the org chart is either a member with a picture or a position still to be announced.
+type Slot = Member | { role: string };
+
+const tba = (role: string): Slot => ({ role });
+const many = (count: number, role: string): Slot[] => Array.from({ length: count }, () => tba(role));
+
+const board: Slot[] = [
+  { name: "Martin Hallbäck",        role: "Vice President",         img: "martin.png",                           linkedin: "https://www.linkedin.com/in/martin-hallback/" },
   { name: "Daniel Walker Tunek",     role: "President",              img: "DanielWalkerTunek-CyZne9Jw.jpeg",     linkedin: "https://www.linkedin.com/in/daniel-walker-tunek-b75474330/" },
-  { name: "Simon Harrysson",         role: "Treasurer & Business",   img: "SimonHarrysson-BQdNKskJ.jpeg",        linkedin: "https://www.linkedin.com/in/simonharrysson" },
-  { name: "Emil Bergqvist",          role: "Education",              img: "EmilBergqvist-CcZ_4YTj.jpeg",         linkedin: "https://www.linkedin.com/in/emil-bergqvist-6b6b61195/" },
-  { name: "Emma Bertmar",            role: "Development",            img: "emma.png",                             linkedin: "https://www.linkedin.com/in/emma-bertmar-b43006339/" },
-  { name: "Martin Hallbäck",        role: "Communication",          img: "martin.png",                           linkedin: "https://www.linkedin.com/in/martin-hallback/" },
-  { name: "Joel Hultman",            role: "Communication",          img: "joel.png",                             linkedin: "https://www.linkedin.com/in/joel-hultman/" },
-  { name: "Johan Hultgren",          role: "Business",               img: "johan.png",                            linkedin: "https://www.linkedin.com/in/johan-hultgren-3991a2265/" },
+  { name: "Simon Harrysson",         role: "Treasurer",              img: "SimonHarrysson-BQdNKskJ.jpeg",        linkedin: "https://www.linkedin.com/in/simonharrysson" },
 ];
 
-const founders = [
+const business: Slot[] = [
+  { name: "Johan Hultgren",          role: "Head of Business",       img: "johan.png",                            linkedin: "https://www.linkedin.com/in/johan-hultgren-3991a2265/" },
+  ...many(5, "Business"),
+];
+
+const communication: Slot[] = [
+  tba("Head of Communication"),
+  ...many(4, "Communication"),
+];
+
+const development: Slot[] = [
+  { name: "Emma Bertmar",            role: "Head of Development",    img: "emma.png",                             linkedin: "https://www.linkedin.com/in/emma-bertmar-b43006339/" },
+];
+
+const it: Slot[] = [
+  tba("Head of IT"),
+  { name: "Emil Bergqvist",          role: "Developer",              img: "EmilBergqvist-CcZ_4YTj.jpeg",         linkedin: "https://www.linkedin.com/in/emil-bergqvist-6b6b61195/" },
+  ...many(4, "Developer"),
+];
+
+const projects: Slot[] = [
+  { name: "Joel Hultman",            role: "Head of Projects",       img: "joel.png",                             linkedin: "https://www.linkedin.com/in/joel-hultman/" },
+  ...many(5, "Developer"),
+];
+
+const founders: Member[] = [
   { name: "Niklas Wretblad",  role: "Founder",    img: "founders/Niklas Wretblad-BMal3_Aj.jpeg", linkedin: "https://www.linkedin.com/in/niklaswretblad/",         posX: "left center" },
   { name: "Fredrik Gordh",    role: "Co-Founder", img: "founders/FredrikGordh-Cg8TIzSp.jpeg",    linkedin: "https://www.linkedin.com/in/fredrik-gordh-riseby/" },
   { name: "Erik Larsson",     role: "Co-Founder", img: "founders/ErikLarsson-uK5pZ8ot.jpeg",     linkedin: "https://www.linkedin.com/in/erik-larsson-b19b42183/" },
   { name: "Axel Wiksäter",   role: "Co-Founder", img: "founders/AxelWiksäter-BTuHUF4k.jpeg",    linkedin: "https://www.linkedin.com/in/axel-wiks%C3%A4ter-536785218/" },
 ];
 
-const PLACEHOLDER_COUNT = 18;
-
-type Member = { name: string; role: string; img: string; linkedin: string; posX?: string };
-
-function PlaceholderCard() {
+function PlaceholderCard({ role }: { role: string }) {
   return (
     <div className="member-card">
       <div className="member-img member-img-placeholder" />
       <h3 className="member-name">To be announced</h3>
-      <p className="member-role">New member</p>
+      <p className="member-role">{role}</p>
     </div>
   );
 }
@@ -69,6 +94,24 @@ function MemberCard({ member }: { member: Member }) {
   );
 }
 
+function SlotCard({ slot }: { slot: Slot }) {
+  return "name" in slot ? <MemberCard member={slot} /> : <PlaceholderCard role={slot.role} />;
+}
+
+// One group of the chart. `row` lays the slots side by side (the board);
+// otherwise they stack vertically with connector lines. Children render below the slots.
+function OrgGroup({ label, slots, row, children }: { label?: string; slots: Slot[]; row?: boolean; children?: ReactNode }) {
+  return (
+    <div className="org-group">
+      {label && <p className="org-label">{label}</p>}
+      <div className={row ? "org-row" : "org-stack"}>
+        {slots.map((s, i) => <SlotCard key={i} slot={s} />)}
+      </div>
+      {children}
+    </div>
+  );
+}
+
 export default function AboutPage() {
   return (
     <>
@@ -79,11 +122,21 @@ export default function AboutPage() {
           <p className="about-description">Meet the dedicated team driving LiU AI Society&apos;s mission to connect students with the world of artificial intelligence.</p>
         </section>
 
-        <section className="about-section">
-          <div className="members-grid">
-            {boardMembers.map(m => <MemberCard key={m.name} member={m} />)}
-            {Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => <PlaceholderCard key={`tba-${i}`} />)}
-          </div>
+        <section className="about-section org-chart">
+          <OrgGroup slots={board} row>
+            <div className="org-trunk" />
+            <div className="org-branches">
+              <OrgGroup label="Business" slots={business} />
+              <OrgGroup label="Communication" slots={communication} />
+              <OrgGroup label="Development" slots={development}>
+                <div className="org-trunk" />
+                <div className="org-branches">
+                  <OrgGroup slots={it} />
+                  <OrgGroup slots={projects} />
+                </div>
+              </OrgGroup>
+            </div>
+          </OrgGroup>
         </section>
 
         <section className="about-section">

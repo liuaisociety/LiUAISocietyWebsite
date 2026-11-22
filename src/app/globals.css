@@ -1270,6 +1270,27 @@ body.light .footer-socials a:hover { color: #000000; }
 .member-icon-link { color: rgba(255,255,255,0.35); transition: color 0.2s ease; display: flex; align-items: center; }
 .member-icon-link:hover { color: #40c4ff; }
 
+/* Org chart (about) — groups of member cards joined by connector lines */
+.org-chart { --org-line: rgba(255,255,255,0.14); }
+.org-group { display: flex; flex-direction: column; align-items: center; position: relative; }
+.org-label { font-family: ui-monospace, monospace; font-size: 11px; color: rgba(64,196,255,0.75); text-transform: uppercase; letter-spacing: 0.12em; text-align: center; margin-bottom: 14px; }
+.org-row { display: flex; gap: 32px; }
+.org-stack { display: flex; flex-direction: column; align-items: center; }
+.org-stack > .member-card + .member-card { position: relative; margin-top: 24px; }
+.org-stack > .member-card + .member-card::before { content: ''; position: absolute; top: -24px; left: 50%; width: 1px; height: 24px; background: var(--org-line); }
+.org-trunk { width: 1px; height: 32px; margin-top: 16px; background: var(--org-line); }
+.org-branches { display: flex; align-items: flex-start; justify-content: center; gap: 32px; }
+.org-branches > .org-group { padding-top: 24px; }
+.org-branches > .org-group::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 24px; background: var(--org-line); }
+.org-branches > .org-group::after { content: ''; position: absolute; top: 0; left: -16px; right: -16px; height: 1px; background: var(--org-line); }
+.org-branches > .org-group:first-child::after { left: 50%; }
+.org-branches > .org-group:last-child::after { right: 50%; }
+.org-chart > .org-group > .org-branches { display: grid; grid-template-columns: repeat(3, 1fr); }
+.org-chart .member-card { height: 300px; }
+.org-branches .org-trunk { height: 12px; margin-top: 0; }
+.org-branches .org-branches > .org-group { padding-top: 12px; }
+.org-branches .org-branches > .org-group::before { height: 12px; }
+
 /* ── Project Cards ──────────────────────────────────────────────────────── */
 .project-card {
   border-radius: 16px;
@@ -1587,6 +1608,27 @@ body.light .footer-socials a:hover { color: #000000; }
   .member-card { width: 100%; }
   .member-img { width: 100%; aspect-ratio: 4/5; height: auto; }
   .about-section, .career-section, .courses-section { padding: 32px 20px 60px; }
+  /* Org chart: no lines. Departments are labelled blocks, two cards per row,
+     a lone card is centred, heads sit alone on their row. */
+  .org-chart .member-card { width: calc(50% - 8px); height: auto; }
+  .org-chart > .org-group { align-items: stretch; }
+  .org-label { flex-basis: 100%; margin-bottom: 0; }
+  .org-row, .org-branches > .org-group {
+    display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+    gap: 20px 16px; padding-top: 0;
+  }
+  /* Stacks and the IT / Projects split dissolve so every card of a department flows in one block */
+  .org-stack, .org-branches .org-branches, .org-branches .org-branches > .org-group { display: contents; }
+  .org-stack > .member-card + .member-card { margin-top: 0; }
+  .org-stack > .member-card + .member-card::before,
+  .org-branches > .org-group::before,
+  .org-branches > .org-group::after,
+  .org-trunk { display: none; }
+  .org-chart > .org-group > .org-branches { display: flex; flex-direction: column; gap: 40px; margin-top: 40px; }
+  .org-row > .member-card:nth-child(2) { order: -1; margin: 0 calc(25% + 4px); }
+  .org-branches > .org-group > .org-stack > .member-card:first-child { margin: 0 calc(25% + 4px); }
+  .org-branches .org-branches > .org-group > .org-stack > .member-card:first-child { margin: 0; }
+  .org-branches .org-branches .org-stack > .member-card:not(:first-child) { order: 1; }
 }
 
 @media (min-width: 769px) and (max-width: 1299px) {
